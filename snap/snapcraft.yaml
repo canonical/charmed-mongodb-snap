@@ -1,0 +1,58 @@
+name: mongodb
+base: core22 # the base snap is the execution environment for this snap
+version: '5.0' # just for humans, typically '1.2+git' or '1.3.2'
+summary: MongoDB in a snap. # 79 char long summary
+description: |
+  MongoDB is a source-available cross-platform 
+    document-oriented database program. Classified 
+    as a NoSQL database program, MongoDB uses JSON
+    -like documents with optional schemas.
+
+grade: stable # must be 'stable' to release into candidate/stable channels
+confinement: strict # use 'strict' once you have the right plugs and slots
+
+layout:
+  /etc/mongod.conf:
+    symlink: $SNAP_COMMON/mongod.conf
+
+apps:
+  mongo:
+    command: usr/bin/mongo
+  mongobridge:
+    command: usr/bin/mongobridge
+  mongod:
+    command: start_mongod.sh
+    daemon: simple
+    install-mode: disable
+  mongodump:
+    command: usr/bin/mongodump
+  mongoexport:
+    command: usr/bin/mongoexport
+  mongofiles:
+    command: usr/bin/mongofiles
+  mongoimport:
+    command: usr/bin/mongoimport
+  mongorestore:
+    command: usr/bin/mongorestore
+  mongos:
+    command: usr/bin/mongos
+  mongostat:
+    command: usr/bin/mongostat
+  mongotop:
+    command: usr/bin/mongotop
+
+parts:
+  mongo-deb:
+    plugin: nil
+    stage-packages:
+      - percona-server-mongodb
+    override-pull: |
+      craftctl default
+      apt install -y wget lsb-release
+      wget https://repo.percona.com/apt/percona-release_latest.$(lsb_release -sc)_all.deb
+      dpkg -i percona-release_latest.$(lsb_release -sc)_all.deb
+      percona-release enable psmdb-50 release
+      apt update
+  wrapper:
+    plugin: dump
+    source: snap/local
