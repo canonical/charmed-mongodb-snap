@@ -15,6 +15,18 @@ layout:
   /etc/mongod.conf:
     symlink: $SNAP_COMMON/mongod.conf
 
+package-repositories:
+  - type: apt
+    components: [main]
+    suites: [jammy]
+    key-id: 4D1BB29D63D98E422B2113B19334A25F8507EFA5
+    url: http://repo.percona.com/psmdb-50/apt
+  - type: apt
+    components: [main]
+    suites: [jammy]
+    key-id: 4D1BB29D63D98E422B2113B19334A25F8507EFA5
+    url: http://repo.percona.com/percona/apt
+
 apps:
   mongo:
     command: usr/bin/mongo
@@ -46,13 +58,6 @@ parts:
     plugin: nil
     stage-packages:
       - percona-server-mongodb
-    override-pull: |
-      craftctl default
-      apt install -y wget lsb-release
-      wget https://repo.percona.com/apt/percona-release_latest.$(lsb_release -sc)_all.deb
-      dpkg -i percona-release_latest.$(lsb_release -sc)_all.deb
-      percona-release enable psmdb-50 release
-      apt update
   wrapper:
     plugin: dump
     source: snap/local

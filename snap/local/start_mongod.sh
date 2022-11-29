@@ -7,4 +7,4 @@ if [ ! -f "${CONFIG_FILE}" ]; then
         cp -r $SNAP/etc/mongod.conf $SNAP_COMMON
 fi
 
-$SNAP/usr/bin/mongod --dbpath $SNAP_DATA
+$SNAP/usr/bin/mongod "$@"
