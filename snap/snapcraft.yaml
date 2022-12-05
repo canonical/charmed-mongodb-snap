@@ -8,14 +8,12 @@ description: |
   as a NoSQL database program, MongoDB uses JSON
   -like documents with optional schemas.
 
-grade: stable # must be 'stable' to release into candidate/stable channels
+grade: devel # must be 'stable' to release into candidate/stable channels
 confinement: strict # use 'strict' once you have the right plugs and slots
 
 layout:
   /etc/mongod.conf:
     symlink: $SNAP_COMMON/mongod.conf
-  /etc/mongodb/keyFile:
-    bind-file: $SNAP_DATA/keyFile
 
 package-repositories:
   - type: apt
@@ -60,6 +58,12 @@ parts:
     plugin: nil
     stage-packages:
       - percona-server-mongodb
+    override-stage: |
+      craftctl default
+      sed -i "s/fork: true/fork: false/g" $CRAFT_STAGE/etc/mongod.conf
+      sed -i "s:/var/log/mongodb/mongod.log:/var/snap/mongodb/common/mongod.log:g" $CRAFT_STAGE/etc/mongod.conf
+      sed -i "s:/var/lib/mongodb:/var/snap/mongodb/common/db:g" $CRAFT_STAGE/etc/mongod.conf
+      sed -i "s:/var/run/mongod.pid:/var/snap/mongodb/common/mongod.pid:g" $CRAFT_STAGE/etc/mongod.conf
   wrapper:
     plugin: dump
     source: snap/local
