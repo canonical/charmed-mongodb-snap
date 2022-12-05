@@ -15,7 +15,7 @@ layout:
   /etc/mongod.conf:
     symlink: $SNAP_COMMON/mongod.conf
   /etc/mongodb/keyFile:
-    symlink: $SNAP_DATA/keyFile
+    bind-file: $SNAP_DATA/keyFile
 
 package-repositories:
   - type: apt
