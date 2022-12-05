@@ -14,8 +14,8 @@ confinement: strict # use 'strict' once you have the right plugs and slots
 layout:
   /etc/mongod.conf:
     symlink: $SNAP_COMMON/mongod.conf
-  /etc/mongodb:
-    symlink: $SNAP_DATA
+  /etc/mongodb/keyFile:
+    symlink: $SNAP_DATA/keyFile
 
 package-repositories:
   - type: apt
