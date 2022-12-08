@@ -36,6 +36,9 @@ apps:
     command: start_mongod.sh
     daemon: simple
     install-mode: disable
+    plugs:
+      - network
+      - network-bind
   mongodump:
     command: usr/bin/mongodump
   mongoexport:
