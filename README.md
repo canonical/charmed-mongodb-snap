@@ -1,5 +1,5 @@
 # Percona MongoDB Snap
-This repository contains the packaging metadata for creating a snap of Percona MongoDB built from the official percona debian repositories. 
+This repository contains the packaging metadata for creating a snap of Percona MongoDB built from the official percona debian repositories.  For more information on snaps, visit [snapcraft.io](https://snapcraft.io/). 
 
 ## Building the Snap
 ### Clone Repository
