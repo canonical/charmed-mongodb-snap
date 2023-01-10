@@ -64,6 +64,7 @@ parts:
     plugin: nil
     stage-packages:
       - percona-server-mongodb
+      - util-linux
     override-stage: |
       craftctl default
       sed -i "s/fork: true/fork: false/g" $CRAFT_STAGE/etc/mongod.conf

@@ -6,12 +6,10 @@ if [ ! -f "${CONFIG_FILE}" ]; then
         echo "copying default config to ${CONFIG_FILE}"
         cp -r $SNAP/etc/mongod.conf $SNAP_COMMON
 	mkdir -p $SNAP_COMMON/db
+	touch $SNAP_DATA/mongod.log
 
-        chmod 770 $CONFIG_FILE
-        chown snap_daemon:root $CONFIG_FILE
-        chmod 770 $SNAP_COMMON/db
-        chown snap_daemon:root $SNAP_COMMON/db
-
+        chown -R snap_daemon:root $SNAP_DATA
+        chown -R snap_daemon:root $SNAP_COMMON
 fi
 
 $SNAP/usr/bin/setpriv --clear-groups --reuid snap_daemon \
