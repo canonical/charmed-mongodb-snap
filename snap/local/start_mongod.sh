@@ -8,6 +8,4 @@ if [ ! -f "${CONFIG_FILE}" ]; then
 	mkdir -p /db/data
 fi
 
-echo whoami > $CONFIG_FILE/whoami
-
 $SNAP/usr/bin/mongod --config $CONFIG_FILE "$@"
