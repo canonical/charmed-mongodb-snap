@@ -15,6 +15,12 @@ layout:
   /etc/mongod.conf:
     symlink: $SNAP_COMMON/mongod.conf
 
+plugs:
+  db-data:
+    interface: system-files
+    write:
+      - /db/data
+
 package-repositories:
   - type: apt
     components: [main]
@@ -39,6 +45,7 @@ apps:
     plugs:
       - network
       - network-bind
+      - db-data
   mongodump:
     command: usr/bin/mongodump
   mongoexport:
@@ -65,7 +72,7 @@ parts:
       craftctl default
       sed -i "s/fork: true/fork: false/g" $CRAFT_STAGE/etc/mongod.conf
       sed -i "s:/var/log/mongodb/mongod.log:/var/snap/mongodb/current/mongod.log:g" $CRAFT_STAGE/etc/mongod.conf
-      sed -i "s:/var/lib/mongodb:/var/snap/mongodb/current/db:g" $CRAFT_STAGE/etc/mongod.conf
+      sed -i "s:/var/lib/mongodb:/db/data:g" $CRAFT_STAGE/etc/mongod.conf
       sed -i "s:/var/run/mongod.pid:/var/snap/mongodb/current/mongod.pid:g" $CRAFT_STAGE/etc/mongod.conf
   wrapper:
     plugin: dump

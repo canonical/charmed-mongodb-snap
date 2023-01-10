@@ -25,6 +25,11 @@ snapcraft pack
 sudo snap install ./mongodb*.charm --devmode
 ```
 
+### Manually Connect System Files
+```bash
+sudo snap connect mongodb:db-data :system-files
+```
+
 ## License
 The Percona MongoDB Snap is free software, distributed under the Apache
 Software License, version 2.0. See
