@@ -29,6 +29,11 @@ package-repositories:
     suites: [jammy]
     key-id: 4D1BB29D63D98E422B2113B19334A25F8507EFA5
     url: http://repo.percona.com/percona/apt
+  - type: apt
+    components: [main]
+    suites: [jammy]
+    key-id: 4D1BB29D63D98E422B2113B19334A25F8507EFA5
+    url: http://repo.percona.com/pbm/apt
 
 apps:
   mongo:
@@ -58,12 +63,15 @@ apps:
     command: usr/bin/mongostat
   mongotop:
     command: usr/bin/mongotop
+  pbm:
+    command: usr/bin/pbm
 
 parts:
   mongo-deb:
     plugin: nil
     stage-packages:
       - percona-server-mongodb
+      - percona-backup-mongodb
       - util-linux
     override-stage: |
       craftctl default
