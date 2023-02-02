@@ -1,0 +1,46 @@
+#!/bin/sh -e
+
+set -eux
+
+# Note: the future we might want to handle scenarios where we reseting the URI restarts the daemon
+
+# Create the config file that is used by pbm
+CONFIG_FILE="$SNAP_COMMON/pbm_config.yaml"
+if [ ! -f "${CONFIG_FILE}" ]; then
+    echo "Using default config ${CONFIG_FILE}"
+    touch "$CONFIG_FILE"
+fi
+
+# set the config file for pbm
+if [ -n "$(snapctl get uri)" ]
+then
+    export PBM_MONGODB_URI="$(snapctl get uri)"
+    # pbm requires that a config file was set up in order to facilitate further congurations. Note 
+    # snaps require special permissions to read files outside of the typical snap directories so
+    # it is important that we set this to a file the snap is able to access.
+    # Further, this command requires that the uri has already been set so we must do it after the
+    # user sets the uri
+    "$SNAP/bin/pbm" config --file "$CONFIG_FILE"
+fi
+
+# the pbm-agent daemon is not run as root meaning it does not have access write to SNAP_DATA, so
+# we need to create a child dir and give it access.
+if [ ! -d "$SNAP_DATA/pbm-agent-dir" ]; then
+    mkdir "$SNAP_DATA/pbm-agent-dir"
+    chmod 770 "$SNAP_DATA/pbm-agent-dir"
+    chown snap_daemon "$SNAP_DATA/pbm-agent-dir"
+fi
+
+
+MONGO_CONFIG_FILE="${SNAP_COMMON}/mongod.conf"
+if [ ! -f "${MONGO_CONFIG_FILE}" ]; then
+        echo "configuration file does not exist."
+        echo "copying default config to ${MONGO_CONFIG_FILE}"
+        cp -r $SNAP/etc/mongod.conf $SNAP_COMMON
+	mkdir -p $SNAP_COMMON/db
+	touch $SNAP_DATA/mongod.log
+
+	# Change ownership of snap directories to allow snap_daemon to read/write
+        chown -R snap_daemon:root $SNAP_DATA
+        chown -R snap_daemon:root $SNAP_COMMON
+fi
