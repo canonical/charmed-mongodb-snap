@@ -31,7 +31,7 @@ if [ ! -d "$SNAP_DATA/pbm-agent-dir" ]; then
     chown snap_daemon "$SNAP_DATA/pbm-agent-dir"
 fi
 
-
+# Copy over the mongod.conf if not exists create needed directories
 MONGO_CONFIG_FILE="${SNAP_COMMON}/mongod.conf"
 if [ ! -f "${MONGO_CONFIG_FILE}" ]; then
         echo "configuration file does not exist."
