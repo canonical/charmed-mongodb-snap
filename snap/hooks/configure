@@ -12,8 +12,8 @@ if [ ! -f "${CONFIG_FILE}" ]; then
 fi
 
 # set the config file for pbm
-if [ -n "$(snapctl get uri)" ]; then
-    PBM_MONGODB_URI=$(snapctl get uri)
+PBM_MONGODB_URI=$(snapctl get uri)
+if [ -n "$(PBM_MONGODB_URI)" ]; then
     export PBM_MONGODB_URI
     # pbm requires that a config file was set up in order to facilitate further congurations. Note 
     # snaps require special permissions to read files outside of the typical snap directories so
