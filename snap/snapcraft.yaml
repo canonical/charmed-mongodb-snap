@@ -1,4 +1,4 @@
-name: mongodb
+name: charmed-mongodb
 base: core22 # the base snap is the execution environment for this snap
 version: '5.0' # just for humans, typically '1.2+git' or '1.3.2'
 summary: MongoDB in a snap. # 79 char long summary
@@ -18,6 +18,12 @@ layout:
   /etc/mongod.conf:
     symlink: $SNAP_COMMON/mongod.conf
 
+hooks:
+    configure:
+      plugs:
+        - network
+        - network-bind
+
 package-repositories:
   - type: apt
     components: [main]
@@ -29,6 +35,11 @@ package-repositories:
     suites: [jammy]
     key-id: 4D1BB29D63D98E422B2113B19334A25F8507EFA5
     url: http://repo.percona.com/percona/apt
+  - type: apt
+    components: [main]
+    suites: [jammy]
+    key-id: 4D1BB29D63D98E422B2113B19334A25F8507EFA5
+    url: http://repo.percona.com/pbm/apt
 
 apps:
   mongo:
@@ -58,12 +69,30 @@ apps:
     command: usr/bin/mongostat
   mongotop:
     command: usr/bin/mongotop
+  pbm:
+    # pbm cli uses an environment variable for the URI which is set by `snapctl.`
+    # According to the snap docs the recommended way to access thi is via a wrapper
+    # script
+    command: wrapper-pbm
+    plugs:
+      - network
+      - network-bind
+  pbm-agent:
+    daemon: simple
+    # pbm-agent requires a variable for the mongodb uri, enviornment variables are not
+    # available to snap daemons, so they must be passed/loaded via `snapctl`. Handling
+    # of this variable is done via a wrapper
+    command: wrapper-pbm-agent
+    plugs:
+      - network
+      - network-bind
 
 parts:
   mongo-deb:
     plugin: nil
     stage-packages:
       - percona-server-mongodb
+      - percona-backup-mongodb
       - util-linux
     override-stage: |
       craftctl default
