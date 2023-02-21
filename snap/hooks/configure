@@ -13,7 +13,7 @@ fi
 
 # set the config file for pbm
 PBM_MONGODB_URI=$(snapctl get uri)
-if [ -n "$(PBM_MONGODB_URI)" ]; then
+if [ -n "${PBM_MONGODB_URI}" ]; then
     export PBM_MONGODB_URI
     # pbm requires that a config file was set up in order to facilitate further congurations. Note 
     # snaps require special permissions to read files outside of the typical snap directories so
@@ -39,6 +39,6 @@ if [ ! -f "${MONGO_CONFIG_FILE}" ]; then
 fi
 
 # Change ownership of snap directories to allow snap_daemon to read/write
-chown -R snap_daemon:root ${SNAP_DATA}
-chown -R snap_daemon:root ${SNAP_COMMON}
+chown -R snap_daemon:root ${SNAP_DATA}/*
+chown -R snap_daemon:root ${SNAP_COMMON}/*
 
