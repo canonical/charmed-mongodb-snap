@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -eux
+
+# Create the config file that is used by pbm
+PBM_CONFIG_FILE="${SNAP_COMMON}/pbm_config.yaml"
+if [ ! -f "${PBM_CONFIG_FILE}" ]; then
+    echo "Using default config ${PBM_CONFIG_FILE}"
+    touch "${PBM_CONFIG_FILE}"
+fi
+
+# the pbm-agent daemon is not run as root meaning it does not have access write to SNAP_DATA, so
+# we need to create a child dir and give it access.
+mkdir -p "${SNAP_DATA}/pbm-agent-dir"
+
+# Copy over the mongod.conf if not exists create needed directories
+MONGO_CONFIG_FILE="${SNAP_COMMON}/mongod.conf"
+if [ ! -f "${MONGO_CONFIG_FILE}" ]; then
+    echo "configuration file does not exist."
+    echo "copying default config to ${MONGO_CONFIG_FILE}"
+    cp -r ${SNAP}/etc/mongod.conf ${SNAP_COMMON}
+    mkdir -p ${SNAP_COMMON}/db
+    touch ${SNAP_DATA}/mongod.log
+fi
+
+# Change ownership of snap directories to allow snap_daemon to read/write
+chown -R 584788:root ${SNAP_DATA}/*
+chown -R 584788:root ${SNAP_COMMON}/*
+

@@ -19,6 +19,10 @@ layout:
     symlink: $SNAP_COMMON/mongod.conf
 
 hooks:
+    install:
+      plugs:
+        - network
+        - network-bind
     configure:
       plugs:
         - network
@@ -47,7 +51,7 @@ apps:
   mongobridge:
     command: usr/bin/mongobridge
   mongod:
-    command: start_mongod.sh
+    command: start-mongod.sh
     daemon: simple
     install-mode: disable
     plugs:
@@ -73,7 +77,7 @@ apps:
     # pbm cli uses an environment variable for the URI which is set by `snapctl.`
     # According to the snap docs the recommended way to access thi is via a wrapper
     # script
-    command: wrapper-pbm
+    command: start-pbm.sh
     plugs:
       - network
       - network-bind
@@ -82,7 +86,7 @@ apps:
     # pbm-agent requires a variable for the mongodb uri, enviornment variables are not
     # available to snap daemons, so they must be passed/loaded via `snapctl`. Handling
     # of this variable is done via a wrapper
-    command: wrapper-pbm-agent
+    command: start-pbm-agent.sh
     plugs:
       - network
       - network-bind
