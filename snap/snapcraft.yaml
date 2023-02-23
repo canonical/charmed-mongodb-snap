@@ -98,12 +98,6 @@ parts:
       - percona-server-mongodb
       - percona-backup-mongodb
       - util-linux
-    override-stage: |
-      craftctl default
-      sed -i "s/fork: true/fork: false/g" $CRAFT_STAGE/etc/mongod.conf
-      sed -i "s:/var/log/mongodb/mongod.log:/var/snap/mongodb/current/mongod.log:g" $CRAFT_STAGE/etc/mongod.conf
-      sed -i "s:/var/lib/mongodb:/var/snap/mongodb/common/db:g" $CRAFT_STAGE/etc/mongod.conf
-      sed -i "s:/var/run/mongod.pid:/var/snap/mongodb/current/mongod.pid:g" $CRAFT_STAGE/etc/mongod.conf
   wrapper:
     plugin: dump
     source: snap/local
