@@ -15,6 +15,10 @@ MONGO_CONFIG_FILE="${SNAP_COMMON}/mongod.conf"
 echo "configuration file does not exist."
 echo "copying default config to ${MONGO_CONFIG_FILE}"
 cp -r ${SNAP}/etc/mongod.conf ${SNAP_COMMON}
+
+# Creating various files/directories in snap folders
+# This is required as the snap_daemon user doesnt have permission
+# to write to those directories
 mkdir -p ${SNAP_COMMON}/db
 touch ${SNAP_DATA}/mongod.log
 touch ${SNAP_DATA}/mongod.pid
