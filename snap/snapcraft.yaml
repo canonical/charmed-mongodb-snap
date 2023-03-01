@@ -54,6 +54,8 @@ apps:
     command: start-mongod.sh
     daemon: simple
     install-mode: disable
+    restart-condition: always
+    restart-delay: 20s
     plugs:
       - network
       - network-bind
