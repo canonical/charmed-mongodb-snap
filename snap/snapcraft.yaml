@@ -48,6 +48,8 @@ package-repositories:
 apps:
   mongo:
     command: usr/bin/mongo
+    plugs:
+      - network
   mongobridge:
     command: usr/bin/mongobridge
   mongod:
