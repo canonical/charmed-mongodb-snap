@@ -16,7 +16,11 @@ system-usernames:
 
 layout:
   /etc/mongod.conf:
-    symlink: ${SNAP_DATA}/etc/mongod/mongod.conf
+    symlink: $SNAP_DATA/etc/mongod/mongod.conf
+  /var/lib/mongod:
+    bind: $SNAP_DATA/var/lib/mongod
+  /var/log/mongod:
+    bind: $SNAP_DATA/var/log/mongod
 
 hooks:
   install:
