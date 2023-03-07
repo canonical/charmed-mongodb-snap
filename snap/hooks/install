@@ -5,7 +5,7 @@ set -eux
 # Create the necessary parent directories 
 mkdir -p "${SNAP_DATA}/etc/pbm/"
 mkdir -p "${SNAP_DATA}/etc/mongod/"
-mkdir -p "${SNAP_COMMON}/var/lib/mongod/"
+mkdir -p "${SNAP_COMMON}/var/lib/mongod/db"
 mkdir -p "${SNAP_COMMON}/var/log/mongod/"
 
 # Create the config file that is used by pbm along with the directories
