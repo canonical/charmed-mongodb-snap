@@ -19,14 +19,14 @@ cp -r ${SNAP}/etc/mongod.conf ${MONGO_CONFIG_FILE}
 # Creating various files/directories in snap folders
 # This is required as the snap_daemon user doesnt have permission
 # to write to those directories
-mkdir -p ${SNAP_COMMON}/db
+mkdir -p ${SNAP_COMMON}/var/lib/mongodb/db
 touch ${SNAP_DATA}/mongod.log
 touch ${SNAP_DATA}/mongod.pid
 
 
 sed -i "s/fork: true/fork: false/g" $MONGO_CONFIG_FILE
 sed -i "s:/var/log/mongodb/mongod.log:$SNAP_DATA/mongod.log:g" $MONGO_CONFIG_FILE
-sed -i "s:/var/lib/mongodb:$SNAP_COMMON/db:g" $MONGO_CONFIG_FILE
+sed -i "s:/var/lib/mongodb:${SNAP_COMMON}/var/lib/mongodb/db:g" $MONGO_CONFIG_FILE
 sed -i "s:/var/run/mongod.pid:$SNAP_DATA/mongod.pid:g" $MONGO_CONFIG_FILE
 
 # Change ownership of snap directories to allow snap_daemon to read/write
