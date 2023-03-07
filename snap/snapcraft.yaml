@@ -14,10 +14,6 @@ confinement: strict # use 'strict' once you have the right plugs and slots
 system-usernames:
   snap_daemon: shared
 
-layout:
-  /etc/mongod.conf:
-    symlink: $SNAP_DATA/etc/mongod/mongod.conf
-
 hooks:
   install:
     plugs:
