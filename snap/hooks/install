@@ -3,7 +3,7 @@
 set -eux
 
 # Create the config file that is used by pbm
-PBM_CONFIG_FILE="${SNAP_COMMON}/pbm_config.yaml"
+PBM_CONFIG_FILE="${SNAP_DATA}/etc/pbm/pbm_config.yaml"
 touch "${PBM_CONFIG_FILE}"
 
 # the pbm-agent daemon is not run as root meaning it does not have access write to SNAP_DATA, so
@@ -11,10 +11,10 @@ touch "${PBM_CONFIG_FILE}"
 mkdir -p "${SNAP_DATA}/pbm-agent-dir"
 
 # Copy over the mongod.conf and create needed directories/files
-MONGO_CONFIG_FILE="${SNAP_COMMON}/mongod.conf"
+MONGO_CONFIG_FILE="${SNAP_DATA}/etc/mongod/mongod.conf"
 echo "configuration file does not exist."
 echo "copying default config to ${MONGO_CONFIG_FILE}"
-cp -r ${SNAP}/etc/mongod.conf ${SNAP_COMMON}
+cp -r ${SNAP}/etc/mongod.conf ${MONGO_CONFIG_FILE}
 
 # Creating various files/directories in snap folders
 # This is required as the snap_daemon user doesnt have permission
@@ -24,10 +24,10 @@ touch ${SNAP_DATA}/mongod.log
 touch ${SNAP_DATA}/mongod.pid
 
 
-sed -i "s/fork: true/fork: false/g" $SNAP_COMMON/mongod.conf
-sed -i "s:/var/log/mongodb/mongod.log:$SNAP_DATA/mongod.log:g" $SNAP_COMMON/mongod.conf
-sed -i "s:/var/lib/mongodb:$SNAP_COMMON/db:g" $SNAP_COMMON/mongod.conf
-sed -i "s:/var/run/mongod.pid:$SNAP_DATA/mongod.pid:g" $SNAP_COMMON/mongod.conf
+sed -i "s/fork: true/fork: false/g" $MONGO_CONFIG_FILE
+sed -i "s:/var/log/mongodb/mongod.log:$SNAP_DATA/mongod.log:g" $MONGO_CONFIG_FILE
+sed -i "s:/var/lib/mongodb:$SNAP_COMMON/db:g" $MONGO_CONFIG_FILE
+sed -i "s:/var/run/mongod.pid:$SNAP_DATA/mongod.pid:g" $MONGO_CONFIG_FILE
 
 # Change ownership of snap directories to allow snap_daemon to read/write
 chown -R 584788:root ${SNAP_DATA}/*
