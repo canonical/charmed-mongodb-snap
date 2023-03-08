@@ -5,8 +5,8 @@ set -eux
 # Create the necessary parent directories 
 mkdir -p "${SNAP_DATA}/etc/pbm/"
 mkdir -p "${SNAP_DATA}/etc/mongod/"
-mkdir -p "${SNAP_COMMON}/var/lib/mongod/"
-mkdir -p "${SNAP_COMMON}/var/log/mongod/"
+mkdir -p "${SNAP_COMMON}/var/lib/mongodb/"
+mkdir -p "${SNAP_COMMON}/var/log/mongodb/"
 
 # Create the config file that is used by pbm along with the directories
 PBM_CONFIG_FILE="${SNAP_DATA}/etc/pbm/pbm_config.yaml"
@@ -21,8 +21,8 @@ cp -r ${SNAP}/etc/mongod.conf ${MONGO_CONFIG_FILE}
 
 # mongod.conf default values are not consistent with the snap directory system.
 sed -i "s/fork: true/fork: false/g" $MONGO_CONFIG_FILE
-sed -i "s:/var/log/mongodb/mongod.log:$SNAP_COMMON/var/log/mongod/mongod.log:g" $MONGO_CONFIG_FILE
-sed -i "s:/var/lib/mongodb:$SNAP_COMMON/var/lib/mongod:g" $MONGO_CONFIG_FILE
+sed -i "s:/var/log/mongodb/mongod.log:$SNAP_COMMON/var/log/mongodb/mongod.log:g" $MONGO_CONFIG_FILE
+sed -i "s:/var/lib/mongodb:$SNAP_COMMON/var/lib/mongodb:g" $MONGO_CONFIG_FILE
 sed -i "s:/var/run/mongod.pid:/tmp/mongod.pid:g" $MONGO_CONFIG_FILE
 
 # Change ownership of snap directories to allow snap_daemon to read/write
