@@ -2,32 +2,28 @@
 
 set -eux
 
-# Create the config file that is used by pbm
-PBM_CONFIG_FILE="${SNAP_COMMON}/pbm_config.yaml"
+# Create the necessary parent directories 
+mkdir -p "${SNAP_DATA}/etc/pbm/"
+mkdir -p "${SNAP_DATA}/etc/mongod/"
+mkdir -p "${SNAP_COMMON}/var/lib/mongod/"
+mkdir -p "${SNAP_COMMON}/var/log/mongod/"
+
+# Create the config file that is used by pbm along with the directories
+PBM_CONFIG_FILE="${SNAP_DATA}/etc/pbm/pbm_config.yaml"
 touch "${PBM_CONFIG_FILE}"
 
-# the pbm-agent daemon is not run as root meaning it does not have access write to SNAP_DATA, so
-# we need to create a child dir and give it access.
-mkdir -p "${SNAP_DATA}/pbm-agent-dir"
-
 # Copy over the mongod.conf and create needed directories/files
-MONGO_CONFIG_FILE="${SNAP_COMMON}/mongod.conf"
+MONGO_CONFIG_FILE="${SNAP_DATA}/etc/mongod/mongod.conf"
 echo "configuration file does not exist."
 echo "copying default config to ${MONGO_CONFIG_FILE}"
-cp -r ${SNAP}/etc/mongod.conf ${SNAP_COMMON}
-
-# Creating various files/directories in snap folders
-# This is required as the snap_daemon user doesnt have permission
-# to write to those directories
-mkdir -p ${SNAP_COMMON}/db
-touch ${SNAP_DATA}/mongod.log
-touch ${SNAP_DATA}/mongod.pid
+cp -r ${SNAP}/etc/mongod.conf ${MONGO_CONFIG_FILE}
 
 
-sed -i "s/fork: true/fork: false/g" $SNAP_COMMON/mongod.conf
-sed -i "s:/var/log/mongodb/mongod.log:$SNAP_DATA/mongod.log:g" $SNAP_COMMON/mongod.conf
-sed -i "s:/var/lib/mongodb:$SNAP_COMMON/db:g" $SNAP_COMMON/mongod.conf
-sed -i "s:/var/run/mongod.pid:$SNAP_DATA/mongod.pid:g" $SNAP_COMMON/mongod.conf
+# mongod.conf default values are not consistent with the snap directory system.
+sed -i "s/fork: true/fork: false/g" $MONGO_CONFIG_FILE
+sed -i "s:/var/log/mongodb/mongod.log:$SNAP_COMMON/var/log/mongod/mongod.log:g" $MONGO_CONFIG_FILE
+sed -i "s:/var/lib/mongodb:$SNAP_COMMON/var/lib/mongod:g" $MONGO_CONFIG_FILE
+sed -i "s:/var/run/mongod.pid:/tmp/mongod.pid:g" $MONGO_CONFIG_FILE
 
 # Change ownership of snap directories to allow snap_daemon to read/write
 chown -R 584788:root ${SNAP_DATA}/*
