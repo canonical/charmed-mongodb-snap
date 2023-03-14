@@ -77,6 +77,13 @@ apps:
     command: usr/bin/mongostat
   mongotop:
     command: usr/bin/mongotop
+  mongodb-exporter:
+    daemon: simple
+    # wrapper is used to run mongodb-exporter as snap_daemon user and pass the URI via `snapctl`.
+    command: start-mongodb-exporter.sh
+    plugs:
+      - network
+      - network-bind
   pbm:
     # pbm cli uses an environment variable for the URI which is set by `snapctl.`
     # According to the snap docs the recommended way to access thi is via a wrapper
@@ -101,6 +108,7 @@ parts:
     stage-packages:
       - percona-server-mongodb
       - percona-backup-mongodb
+      - pmm2-client
       - util-linux
   wrapper:
     plugin: dump
