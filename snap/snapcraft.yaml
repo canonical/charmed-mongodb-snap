@@ -9,7 +9,11 @@ description: |
   -like documents with optional schemas.
 
 grade: devel # must be 'stable' to release into candidate/stable channels
-confinement: strict # use 'strict' once you have the right plugs and slots
+confinement: strict
+
+website: https://github.com/canonical/charmed-mongodb-snap
+contact: https://github.com/canonical/charmed-mongodb-snap/issues/new
+issues: https://github.com/canonical/charmed-mongodb-snap/issues/new
 
 system-usernames:
   snap_daemon: shared
