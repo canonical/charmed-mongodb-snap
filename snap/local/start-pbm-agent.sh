@@ -8,4 +8,4 @@ exec "${SNAP}"/usr/bin/setpriv \
         --clear-groups \
         --reuid snap_daemon \
         --regid snap_daemon -- \
-        "$SNAP/usr/bin/pbm-agent" --mongodb-uri "$(snapctl get uri)"
+        "$SNAP/usr/bin/pbm-agent" --mongodb-uri "$(snapctl get pbm-uri)"
