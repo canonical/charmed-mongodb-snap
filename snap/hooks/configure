@@ -5,7 +5,7 @@ set -eux
 CONFIG_FILE="${SNAP_DATA}/etc/pbm/pbm_config.yaml"
 
 # set the config file for pbm
-PBM_MONGODB_URI=$(snapctl get uri)
+PBM_MONGODB_URI=$(snapctl get pbm-uri)
 if [ -n "${PBM_MONGODB_URI}" ]; then
     export PBM_MONGODB_URI
 

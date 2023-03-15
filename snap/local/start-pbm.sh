@@ -4,5 +4,5 @@
 # via `snapctl get`
 
 # set the URI as an environment variable to be used by pbm CLI
-export PBM_MONGODB_URI="$(snapctl get uri)"
+export PBM_MONGODB_URI="$(snapctl get pbm-uri)"
 "$SNAP/usr/bin/pbm" "$@"
