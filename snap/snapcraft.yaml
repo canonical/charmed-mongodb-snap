@@ -103,13 +103,22 @@ apps:
       - network-bind
 
 parts:
+  percona-mongodb-exporter:
+    plugin: go
+    source: https://github.com/percona/mongodb_exporter
+    source-type: git
+    build-snaps:
+      - go
+    build-packages:
+      - gcc
+
   mongo-deb:
     plugin: nil
     stage-packages:
       - percona-server-mongodb
       - percona-backup-mongodb
-      - pmm2-client
       - util-linux
+
   wrapper:
     plugin: dump
     source: snap/local
