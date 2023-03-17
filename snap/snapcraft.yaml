@@ -108,8 +108,10 @@ parts:
     stage-packages:
       - percona-server-mongodb
       - percona-backup-mongodb
-      - pmm2-client
       - util-linux
+  percona-mongodb_exporter:
+    plugin: dump
+    source: https://github.com/percona/mongodb_exporter/releases/download/v0.37.0/mongodb_exporter-0.37.0.linux-64-bit.deb
   wrapper:
     plugin: dump
     source: snap/local
