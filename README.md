@@ -28,7 +28,7 @@ sudo snap install ./charmed-mongodb*.snap --devmode
 ## License
 The Charmed MongoDB Snap is free software, distributed under the Apache
 Software License, version 2.0. See
-[LICENSE](https://github.com/canonical/charmed-mongodb-snap/blob/5/edge/LICENSE)
+[LICENSE](https://github.com/canonical/charmed-mongodb-snap/blob/5/edge/licenses)
 for more information.
 
 ## Trademark Notice
