@@ -6,5 +6,5 @@ exec "${SNAP}"/usr/bin/setpriv \
         --clear-groups \
         --reuid snap_daemon \
         --regid snap_daemon -- \
-        "$SNAP/usr/bin/mongodb_exporter" --mongodb.uri "$(snapctl get monitor-uri)" --collect-all
+        "$SNAP/usr/bin/mongodb_exporter" --mongodb.uri ${MONGODB_MONITOR_URI} --collector.replicasetstatus --collector.dbstats
 
