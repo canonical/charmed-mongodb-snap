@@ -14,5 +14,5 @@ jobs:
       - name: Upload locally built Snap artifact
         uses: actions/upload-artifact@v3
         with:
-          name: mongodb-snap
+          name: snap-artifact
           path: ${{ steps.build.outputs.snap }}
