@@ -1,4 +1,4 @@
-name: Lint
+name: Smoke
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
