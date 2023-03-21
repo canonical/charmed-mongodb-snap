@@ -113,7 +113,8 @@ parts:
       - util-linux
   percona-mongodb-exporter:
     plugin: dump
-    source: https://github.com/percona/mongodb_exporter/releases/download/v0.37.0/mongodb_exporter-0.37.0.linux-64-bit.deb
+    source: "https://github.com/percona/mongodb_exporter/releases/download\
+      /v0.37.0/mongodb_exporter-0.37.0.linux-64-bit.deb"
   wrapper:
     plugin: dump
     source: snap/local
