@@ -5,4 +5,8 @@
 
 # set the URI as an environment variable to be used by pbm CLI
 export PBM_MONGODB_URI="$(snapctl get pbm-uri)"
-"$SNAP/usr/bin/pbm" "$@"
+exec "${SNAP}"/usr/bin/setpriv \
+        --clear-groups \
+        --reuid snap_daemon \
+        --regid snap_daemon -- \
+        "$SNAP/usr/bin/pbm" "$@"
