@@ -47,11 +47,11 @@ package-repositories:
 
 apps:
   mongo:
-    command: run-mongo.sh
+    command: drop_priv.sh mongo
     plugs:
       - network
   mongobridge:
-    command: run-mongobridge.sh
+    command: drop_priv.sh mongobridge
   mongod:
     command: start-mongod.sh
     daemon: simple
@@ -62,21 +62,21 @@ apps:
       - network
       - network-bind
   mongodump:
-    command: run-mongodump.sh
+    command: drop_priv.sh mongodump
   mongoexport:
-    command: run-mongoexport.sh
+    command: drop_priv.sh mongoexport
   mongofiles:
-    command: run-mongofiles.sh
+    command: drop_priv.sh mongofiles
   mongoimport:
-    command: run-mongoimport.sh
+    command: drop_priv.sh mongoimport
   mongorestore:
-    command: run-mongorestore.sh
+    command: drop_priv.sh mongorestore
   mongos:
-    command: run-mongos.sh
+    command: drop_priv.sh mongos
   mongostat:
-    command: run-mongostat.sh
+    command: drop_priv.sh mongostat
   mongotop:
-    command: run-mongotop.sh
+    command: drop_priv.sh mongotop
   mongodb-exporter:
     daemon: simple
     # wrapper is used to run mongodb-exporter as snap_daemon user and pass the URI via `snapctl`.
