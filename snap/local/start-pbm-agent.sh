@@ -4,8 +4,9 @@
 # via `snapctl get`
 
 # execute pbm-agent as the snap-daemon user and use the configured value for the uri
+export PBM_MONGODB_URI="$(snapctl get pbm-uri)"
 exec "${SNAP}"/usr/bin/setpriv \
         --clear-groups \
         --reuid snap_daemon \
         --regid snap_daemon -- \
-        "$SNAP/usr/bin/pbm-agent" --mongodb-uri "$(snapctl get pbm-uri)"
+        "$SNAP/usr/bin/pbm-agent" 
