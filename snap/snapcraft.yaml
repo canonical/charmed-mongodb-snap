@@ -47,11 +47,11 @@ package-repositories:
 
 apps:
   mongo:
-    command: usr/bin/mongo
+    command: drop_priv.sh mongo
     plugs:
       - network
   mongobridge:
-    command: usr/bin/mongobridge
+    command: drop_priv.sh mongobridge
   mongod:
     command: start-mongod.sh
     daemon: simple
@@ -62,21 +62,21 @@ apps:
       - network
       - network-bind
   mongodump:
-    command: usr/bin/mongodump
+    command: drop_priv.sh mongodump
   mongoexport:
-    command: usr/bin/mongoexport
+    command: drop_priv.sh mongoexport
   mongofiles:
-    command: usr/bin/mongofiles
+    command: drop_priv.sh mongofiles
   mongoimport:
-    command: usr/bin/mongoimport
+    command: drop_priv.sh mongoimport
   mongorestore:
-    command: usr/bin/mongorestore
+    command: drop_priv.sh mongorestore
   mongos:
-    command: usr/bin/mongos
+    command: drop_priv.sh mongos
   mongostat:
-    command: usr/bin/mongostat
+    command: drop_priv.sh mongostat
   mongotop:
-    command: usr/bin/mongotop
+    command: drop_priv.sh mongotop
   mongodb-exporter:
     daemon: simple
     # wrapper is used to run mongodb-exporter as snap_daemon user and pass the URI via `snapctl`.
@@ -88,7 +88,7 @@ apps:
     # pbm cli uses an environment variable for the URI which is set by `snapctl.`
     # According to the snap docs the recommended way to access thi is via a wrapper
     # script
-    command: start-pbm.sh
+    command: run-pbm.sh
     plugs:
       - network
       - network-bind
@@ -109,7 +109,7 @@ parts:
       - percona-server-mongodb
       - percona-backup-mongodb
       - util-linux
-  percona-mongodb_exporter:
+  percona-mongodb-exporter:
     plugin: dump
     source: https://github.com/percona/mongodb_exporter/releases/download/v0.37.0/mongodb_exporter-0.37.0.linux-64-bit.deb
   wrapper:
