@@ -86,19 +86,19 @@ apps:
       - network
       - network-bind
   pbm:
-    # pbm cli uses an environment variable for the URI which is set by `snapctl.`
-    # According to the snap docs the recommended way to access thi is via a wrapper
-    # script
+    # pbm cli uses an environment variable for the URI which is set
+    # by `snapctl.` According to the snap docs the recommended way
+    # to access thi is via a wrapper script
     command: run-pbm.sh
     plugs:
       - network
       - network-bind
   pbm-agent:
     daemon: simple
-    # pbm-agent requires a variable for the mongodb uri, enviornment
-    # variables are not available to snap daemons, so they must be
-    # passed/loaded via `snapctl`. Handling of this variable is done
-    # via a wrapper
+    # pbm-agent requires a variable for the mongodb uri,
+    # enviornment variables are not available to snap daemons,
+    # so they must be passed/loaded via `snapctl`. Handling of
+    # this variable is done via a wrapper
     command: start-pbm-agent.sh
     plugs:
       - network

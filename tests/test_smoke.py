@@ -37,7 +37,7 @@ def test_all_services():
         snapcraft = yaml.safe_load(file)
 
         skip = []
-        
+
         for app, data in snapcraft["apps"].items():
             if bool(data.get("daemon")) and app not in skip:
                 print(f"\nTesting {snapcraft['name']}.{app} service....")
