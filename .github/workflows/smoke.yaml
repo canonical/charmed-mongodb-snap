@@ -25,4 +25,4 @@ jobs:
         with:
           name: snap-artifact
       - name: Smoke Tests
-        run: tox -e smoke
+        run: tox run -e smoke
