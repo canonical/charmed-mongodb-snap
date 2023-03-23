@@ -26,7 +26,7 @@ def test_all_apps():
         for app, data in snapcraft["apps"].items():
             if not bool(data.get("daemon")) and app not in skip:
                 subprocess.run(
-                    f"{snapcraft['name']}.{app} {override.get(app, '--help')}".split(),
+                    f"sudo {snapcraft['name']}.{app} {override.get(app, '--help')}".split(),
                     check=True,
                 )
 
