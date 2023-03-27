@@ -89,7 +89,7 @@ apps:
     # pbm cli uses an environment variable for the URI which is set
     # by `snapctl.` According to the snap docs the recommended way
     # to access thi is via a wrapper script
-    command: run-pbm.sh
+    command: drop_priv.sh pbm
     plugs:
       - network
       - network-bind
