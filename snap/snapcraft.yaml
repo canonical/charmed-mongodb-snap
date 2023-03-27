@@ -81,6 +81,8 @@ apps:
     daemon: simple
     # wrapper is used to run mongodb-exporter as snap_daemon user and pass the URI via `snapctl`.
     command: start-mongodb-exporter.sh
+    restart-condition: always
+    restart-delay: 20s
     plugs:
       - network
       - network-bind
