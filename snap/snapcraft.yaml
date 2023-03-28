@@ -51,6 +51,8 @@ slots:
     source:
       read:
         - $SNAP_COMMON/var/log/mongod
+        - $SNAP_COMMON/var/log/mongos
+        - $SNAP_COMMON/var/log/pbm
 
 apps:
   mongo:
