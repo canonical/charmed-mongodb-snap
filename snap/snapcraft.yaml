@@ -70,6 +70,8 @@ apps:
     plugs:
       - network
       - network-bind
+    slots:
+      - logs
   mongodump:
     command: drop_priv.sh mongodump
   mongoexport:
@@ -82,6 +84,8 @@ apps:
     command: drop_priv.sh mongorestore
   mongos:
     command: drop_priv.sh mongos
+    slots:
+      - logs
   mongostat:
     command: drop_priv.sh mongostat
   mongotop:
@@ -114,6 +118,8 @@ apps:
     plugs:
       - network
       - network-bind
+    slots:
+      - logs
 
 parts:
   mongo-deb:
