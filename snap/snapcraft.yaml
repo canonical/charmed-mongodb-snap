@@ -135,3 +135,6 @@ parts:
   wrapper:
     plugin: dump
     source: snap/local
+  licenses:
+    plugin: dump
+    source: licenses/
