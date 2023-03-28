@@ -3,8 +3,8 @@ base: core22 # the base snap is the execution environment for this snap
 version: "5.0" # just for humans, typically '1.2+git' or '1.3.2'
 summary: MongoDB in a snap. # 79 char long summary
 description: |
-  MongoDB is a source-available cross-platform 
-  document-oriented database program. Classified 
+  MongoDB is a source-available cross-platform
+  document-oriented database program. Classified
   as a NoSQL database program, MongoDB uses JSON
   -like documents with optional schemas.
 
@@ -88,7 +88,8 @@ apps:
     command: drop_priv.sh mongotop
   mongodb-exporter:
     daemon: simple
-    # wrapper is used to run mongodb-exporter as snap_daemon user and pass the URI via `snapctl`.
+    # wrapper is used to run mongodb-exporter as snap_daemon user
+    # and pass the URI via `snapctl`.
     command: start-mongodb-exporter.sh
     restart-condition: always
     restart-delay: 20s
@@ -96,18 +97,19 @@ apps:
       - network
       - network-bind
   pbm:
-    # pbm cli uses an environment variable for the URI which is set by `snapctl.`
-    # According to the snap docs the recommended way to access thi is via a wrapper
-    # script
-    command: run-pbm.sh
+    # pbm cli uses an environment variable for the URI which is set
+    # by `snapctl.` According to the snap docs the recommended way
+    # to access thi is via a wrapper script
+    command: drop_priv.sh pbm
     plugs:
       - network
       - network-bind
   pbm-agent:
     daemon: simple
-    # pbm-agent requires a variable for the mongodb uri, enviornment variables are not
-    # available to snap daemons, so they must be passed/loaded via `snapctl`. Handling
-    # of this variable is done via a wrapper
+    # pbm-agent requires a variable for the mongodb uri,
+    # enviornment variables are not available to snap daemons,
+    # so they must be passed/loaded via `snapctl`. Handling of
+    # this variable is done via a wrapper
     command: start-pbm-agent.sh
     plugs:
       - network
@@ -122,7 +124,8 @@ parts:
       - util-linux
   percona-mongodb-exporter:
     plugin: dump
-    source: https://github.com/percona/mongodb_exporter/releases/download/v0.37.0/mongodb_exporter-0.37.0.linux-64-bit.deb
+    source: "https://github.com/percona/mongodb_exporter/releases/download\
+      /v0.37.0/mongodb_exporter-0.37.0.linux-64-bit.deb"
   wrapper:
     plugin: dump
     source: snap/local
