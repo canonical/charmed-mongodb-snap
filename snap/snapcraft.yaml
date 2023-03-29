@@ -128,6 +128,17 @@ parts:
       - percona-server-mongodb
       - percona-backup-mongodb
       - util-linux
+    organize:
+      usr/share/doc/percona-backup-mongodb/copyright: licenses/LICENSE-percona-backup-mongodb
+      usr/share/doc/percona-server-mongodb/LICENSE-Community.txt.gz: licenses/LICENSE-Community.txt.gz
+  # TODO This does not work
+  # unzip-license:
+  #   after: [mongo-deb]
+  #   plugin: nil
+  #   override-build: |
+  #     gunzip licenses/LICENSE-Community
+  #   organize:
+  #     licenses/LICENSE-Community.txt.gz: licenses/LICENSE-Community
   percona-mongodb-exporter:
     plugin: dump
     source: "https://github.com/percona/mongodb_exporter/releases/download\
@@ -135,6 +146,18 @@ parts:
   wrapper:
     plugin: dump
     source: snap/local
-  licenses:
+  snap-licenses:
     plugin: dump
     source: licenses/
+    organize:
+      LICENSE-snap: licenses/LICENSE-snap
+
+  percona-mongodb-exporter-license:
+    # TODO this doesn't complain but also doesn't put it in the licenses folder
+    # TODO in vs 0.38 of mongodb exporter they will ship the license with the package - until
+    # then copy it over manually
+    plugin: nil
+    override-pull: |
+      wget https://raw.githubusercontent.com/percona/mongodb_exporter/v0.37.0/LICENSE  -P licenses/
+    organize:
+      licenses/LICENSE: licenses/LICENSE-mongodb-exporter
