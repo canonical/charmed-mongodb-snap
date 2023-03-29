@@ -128,17 +128,12 @@ parts:
       - percona-server-mongodb
       - percona-backup-mongodb
       - util-linux
+    override-prime: |
+      craftctl default
+      gzip -df $CRAFT_PRIME/licenses/LICENSE-Community.txt.gz
+      mv $CRAFT_PRIME/licenses/LICENSE-Community.txt $CRAFT_PRIME/licenses/LICENSE-percona-server
     organize:
-      usr/share/doc/percona-backup-mongodb/copyright: licenses/LICENSE-percona-backup-mongodb
       usr/share/doc/percona-server-mongodb/LICENSE-Community.txt.gz: licenses/LICENSE-Community.txt.gz
-  # TODO This does not work
-  # unzip-license:
-  #   after: [mongo-deb]
-  #   plugin: nil
-  #   override-build: |
-  #     gunzip licenses/LICENSE-Community
-  #   organize:
-  #     licenses/LICENSE-Community.txt.gz: licenses/LICENSE-Community
   percona-mongodb-exporter:
     plugin: dump
     source: "https://github.com/percona/mongodb_exporter/releases/download\
@@ -146,18 +141,27 @@ parts:
   wrapper:
     plugin: dump
     source: snap/local
-  snap-licenses:
+  snap-license:
     plugin: dump
-    source: licenses/
+    source: .
+    source-type: local
+    stage:
+      - licenses/LICENSE-snap
     organize:
-      LICENSE-snap: licenses/LICENSE-snap
-
+      LICENSE: licenses/LICENSE-snap
   percona-mongodb-exporter-license:
-    # TODO this doesn't complain but also doesn't put it in the licenses folder
-    # TODO in vs 0.38 of mongodb exporter they will ship the license with the package - until
-    # then copy it over manually
     plugin: nil
-    override-pull: |
-      wget https://raw.githubusercontent.com/percona/mongodb_exporter/v0.37.0/LICENSE  -P licenses/
-    organize:
-      licenses/LICENSE: licenses/LICENSE-mongodb-exporter
+    build-packages:
+      - wget
+    override-build: |
+      craftctl default
+      mkdir -p $CRAFT_PART_INSTALL/licenses
+      wget https://raw.githubusercontent.com/percona/mongodb_exporter/v0.37.0/LICENSE  -o $CRAFT_PART_INSTALL/licenses/LICENSE-mongodb-exporter
+  percona-backup-mongodb-license:
+    plugin: nil
+    build-packages:
+      - wget
+    override-build: |
+      craftctl default
+      mkdir -p $CRAFT_PART_INSTALL/licenses
+      wget https://raw.githubusercontent.com/percona/percona-backup-mongodb/main/LICENSE  -o $CRAFT_PART_INSTALL/licenses/LICENSE-percona-backup
