@@ -131,9 +131,11 @@ parts:
     override-prime: |
       craftctl default
       gzip -df $CRAFT_PRIME/licenses/LICENSE-Community.txt.gz
-      mv $CRAFT_PRIME/licenses/LICENSE-Community.txt $CRAFT_PRIME/licenses/LICENSE-percona-server
+      mv $CRAFT_PRIME/licenses/LICENSE-Community.txt \
+        $CRAFT_PRIME/licenses/LICENSE-percona-server
     organize:
-      usr/share/doc/percona-server-mongodb/LICENSE-Community.txt.gz: licenses/LICENSE-Community.txt.gz
+      usr/share/doc/percona-server-mongodb/LICENSE-Community.txt.gz:
+        licenses/LICENSE-Community.txt.gz
   percona-mongodb-exporter:
     plugin: dump
     source: "https://github.com/percona/mongodb_exporter/releases/download\
@@ -154,14 +156,18 @@ parts:
     build-packages:
       - wget
     override-build: |
+      PERCONA_GH=https://raw.githubusercontent.com/percona
       craftctl default
       mkdir -p $CRAFT_PART_INSTALL/licenses
-      wget https://raw.githubusercontent.com/percona/mongodb_exporter/v0.37.0/LICENSE  -o $CRAFT_PART_INSTALL/licenses/LICENSE-mongodb-exporter
+      wget ${PERCONA_GH}/mongodb_exporter/v0.37.0/LICENSE \
+        -o $CRAFT_PART_INSTALL/licenses/LICENSE-mongodb-exporter
   percona-backup-mongodb-license:
     plugin: nil
     build-packages:
       - wget
     override-build: |
+      PERCONA_GH=https://raw.githubusercontent.com/percona
       craftctl default
       mkdir -p $CRAFT_PART_INSTALL/licenses
-      wget https://raw.githubusercontent.com/percona/percona-backup-mongodb/main/LICENSE  -o $CRAFT_PART_INSTALL/licenses/LICENSE-percona-backup
+      wget ${PERCONA_GH}/percona-backup-mongodb/main/LICENSE \
+        -o $CRAFT_PART_INSTALL/licenses/LICENSE-percona-backup
