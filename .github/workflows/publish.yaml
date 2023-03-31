@@ -16,12 +16,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
-        id: download
         with:
           name: snap-artifact
+      - id: get-snap-name
+        run: echo "SNAP_FILE=$(ls *.snap)" >> $GITHUB_OUTPUT
       - uses: snapcore/action-publish@v1
         env:
           SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
         with:
-          snap: ${{steps.download.outputs.download-path}}
+          snap: ${{ steps.get-snap-name.outputs.SNAP_FILE }}
           release: ${{ github.ref_name }}
