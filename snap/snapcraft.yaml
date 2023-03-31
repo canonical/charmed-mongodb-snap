@@ -158,4 +158,4 @@ parts:
       craftctl default
       mkdir -p $CRAFT_PART_INSTALL/licenses
       wget ${PERCONA_GH}/mongodb_exporter/v0.37.0/LICENSE \
-        -o $CRAFT_PART_INSTALL/licenses/LICENSE-mongodb-exporter
+        -O $CRAFT_PART_INSTALL/licenses/LICENSE-mongodb-exporter
