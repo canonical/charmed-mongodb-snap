@@ -128,6 +128,14 @@ parts:
       - percona-server-mongodb
       - percona-backup-mongodb
       - util-linux
+    override-prime: |
+      craftctl default
+      LICENSE_LOC=usr/share/doc/percona-server-mongodb
+      zcat $CRAFT_PRIME/$LICENSE_LOC/LICENSE-Community.txt.gz \
+        > $CRAFT_PRIME/licenses/LICENSE-percona-server
+    organize:
+      usr/share/doc/percona-backup-mongodb/copyright:
+        licenses/LICENSE-percona-backup-mongodb
   percona-mongodb-exporter:
     plugin: dump
     source: "https://github.com/percona/mongodb_exporter/releases/download\
@@ -135,3 +143,21 @@ parts:
   wrapper:
     plugin: dump
     source: snap/local
+  snap-license:
+    plugin: dump
+    source: .
+    source-type: local
+    stage:
+      - licenses/LICENSE-snap
+    organize:
+      LICENSE: licenses/LICENSE-snap
+  percona-mongodb-exporter-license:
+    plugin: nil
+    build-packages:
+      - wget
+    override-build: |
+      PERCONA_GH=https://raw.githubusercontent.com/percona
+      craftctl default
+      mkdir -p $CRAFT_PART_INSTALL/licenses
+      wget ${PERCONA_GH}/mongodb_exporter/v0.37.0/LICENSE \
+        -O $CRAFT_PART_INSTALL/licenses/LICENSE-mongodb-exporter
