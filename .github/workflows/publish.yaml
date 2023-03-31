@@ -16,11 +16,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
+        id: download
         with:
           name: snap-artifact
       - uses: snapcore/action-publish@v1
         env:
           SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
         with:
-          snap: charmed-*_*_amd64.snap
+          snap: ${{steps.download.outputs.download-path}}
           release: ${{ github.ref_name }}
