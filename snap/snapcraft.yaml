@@ -130,10 +130,12 @@ parts:
       - util-linux
     override-prime: |
       craftctl default
-      zcat $CRAFT_PRIME/usr/share/doc/percona-server-mongodb/LICENSE-Community.txt.gz \
+      LICENSE_LOC=usr/share/doc/percona-server-mongodb
+      zcat $CRAFT_PRIME/$LICENSE_LOC/LICENSE-Community.txt.gz \
         > $CRAFT_PRIME/licenses/LICENSE-percona-server
     organize:
-      usr/share/doc/percona-backup-mongodb/copyright: licenses/LICENSE-percona-backup-mongodb
+      usr/share/doc/percona-backup-mongodb/copyright:
+        licenses/LICENSE-percona-backup-mongodb
   percona-mongodb-exporter:
     plugin: dump
     source: "https://github.com/percona/mongodb_exporter/releases/download\
