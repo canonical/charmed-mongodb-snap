@@ -9,5 +9,5 @@ exec "${SNAP}"/usr/bin/setpriv \
         --clear-groups \
         --reuid snap_daemon \
         --regid snap_daemon -- \
-        "$SNAP/usr/bin/mongodb_exporter" --collector.replicasetstatus --collector.dbstats
+        "$SNAP/usr/bin/mongodb_exporter" --collector.diagnosticdata --compatible-mode
 
