@@ -2,18 +2,30 @@
 
 set -eux
 
-CONFIG_FILE="${SNAP_DATA}/etc/pbm/pbm_config.yaml"
 
-# set the config file for pbm
-PBM_MONGODB_URI=$(snapctl get pbm-uri)
-if [ -n "${PBM_MONGODB_URI}" ]; then
-    export PBM_MONGODB_URI
+# We use the pbm config file as an indicator that the config has been correctly set by pbm. 
+# The confinement of this snap prevents it from writing to `SNAP_DATA` so instead we write
+# to SNAP_USER_DATA
+mkdir -p "${SNAP_USER_DATA}/etc/pbm/"
+PBM_CONFIG_FILE="${SNAP_USER_DATA}/etc/pbm/pbm_config.yaml"
 
-    # pbm requires that a config file was set up in order to facilitate further congurations. Note 
-    # snaps require special permissions to read files outside of the typical snap directories so
-    # it is important that we set this to a file the snap is able to access.
-    # Further, this command requires that the uri has already been set so we must do it after the
-    # user sets the uri
-    "$SNAP/usr/bin/pbm" config --file "${CONFIG_FILE}"
+# PBM requires that a config file was set up in order to facilitate further congurations. 
+#   i.e. with pbm config --set key=value
+# However reseting the config file while PBM is running causes PBM to lose existing configurations
+# and fail. Therefore it is necessary to only set the config file once.
+# Further, setting the config requires that the uri has already been set and that the URI is valid
+# so we must do it after the user sets the uri.
+if [  -n "$(snapctl get pbm-uri)"  ] && [ ! -f "${PBM_CONFIG_FILE}" ]; then
+    export PBM_MONGODB_URI="$(snapctl get pbm-uri)"
+    touch "${PBM_CONFIG_FILE}"
+
+    # if the URI is incorrect then the config file will be ignored and it is necessary to try again
+    # with a correct uri.
+    if "$SNAP/usr/bin/pbm" config --file "${PBM_CONFIG_FILE}"; then
+        echo "# this file is to be left empty. Changes in this file will be ignored." > ${PBM_CONFIG_FILE}
+    else 
+        echo "uri incorrect failed to correctly set config" 
+        rm "${PBM_CONFIG_FILE}"
+    fi
 fi
 

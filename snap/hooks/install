@@ -8,10 +8,6 @@ mkdir -p "${SNAP_DATA}/etc/mongod/"
 mkdir -p "${SNAP_COMMON}/var/lib/mongodb/"
 mkdir -p "${SNAP_COMMON}/var/log/mongodb/"
 
-# Create the config file that is used by pbm along with the directories
-PBM_CONFIG_FILE="${SNAP_DATA}/etc/pbm/pbm_config.yaml"
-touch "${PBM_CONFIG_FILE}"
-
 # Copy over the mongod.conf and create needed directories/files
 MONGO_CONFIG_FILE="${SNAP_DATA}/etc/mongod/mongod.conf"
 echo "configuration file does not exist."
