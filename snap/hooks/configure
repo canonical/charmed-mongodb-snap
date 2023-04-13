@@ -23,12 +23,14 @@ if [  -n "${PBM_MONGODB_URI}"  ] && [ ! -f "${PBM_CONFIG_FILE}" ]; then
     # if the URI is incorrect then the config file will be ignored and it is necessary to try again
     # with a correct uri.
     if "$SNAP/usr/bin/pbm" config --file "${PBM_CONFIG_FILE}"; then
-        # SNAP_DATA is not writable by root - so we must switch to `snap_daemon` user. 
+        # SNAP_DATA is not writable by root - so we must switch to `snap_daemon` user. Further
+        # running `bash -c` will mean that we won't have access to the local variable 
+        # PBM_MONGODB_URI. So we should specify the entire path of the file.
         "${SNAP}"/usr/bin/setpriv \
             --clear-groups \
             --reuid snap_daemon \
             --regid snap_daemon -- \
-            bash -c 'echo "# this file is to be left empty. Changes in this file will be ignored." > ${PBM_CONFIG_FILE}'
+            bash -c 'echo "# this file is to be left empty. Changes in this file will be ignored." > "${SNAP_DATA}/etc/pbm/pbm_config.yaml"'
     else 
         echo "uri incorrect failed to correctly set config" 
         # SNAP_DATA is not writable by root - so we must switch to `snap_daemon` user. 
