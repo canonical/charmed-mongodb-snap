@@ -74,6 +74,9 @@ apps:
       - logs
   mongodump:
     command: drop_priv.sh mongodump
+    plugs:
+      - network
+      - network-bind
   mongoexport:
     command: drop_priv.sh mongoexport
   mongofiles:
@@ -82,6 +85,9 @@ apps:
     command: drop_priv.sh mongoimport
   mongorestore:
     command: drop_priv.sh mongorestore
+    plugs:
+      - network
+      - network-bind
   mongos:
     command: drop_priv.sh mongos
     slots:
