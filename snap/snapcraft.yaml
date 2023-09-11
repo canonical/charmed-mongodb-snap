@@ -89,7 +89,14 @@ apps:
       - network
       - network-bind
   mongos:
-    command: drop_priv.sh mongos
+    daemon: simple
+    install-mode: disable
+    command: start-mongos.sh
+    restart-condition: always
+    restart-delay: 20s
+    plugs:
+      - network
+      - network-bind
     slots:
       - logs
   mongostat:
