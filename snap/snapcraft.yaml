@@ -1,6 +1,6 @@
 name: charmed-mongodb
 base: core22 # the base snap is the execution environment for this snap
-version: "5.0" # just for humans, typically '1.2+git' or '1.3.2'
+version: "6.0" # just for humans, typically '1.2+git' or '1.3.2'
 summary: MongoDB in a snap. # 79 char long summary
 description: |
   MongoDB is a source-available cross-platform
@@ -32,18 +32,8 @@ package-repositories:
   - type: apt
     components: [main]
     suites: [jammy]
-    key-id: 4D1BB29D63D98E422B2113B19334A25F8507EFA5
-    url: http://repo.percona.com/psmdb-50/apt
-  - type: apt
-    components: [main]
-    suites: [jammy]
-    key-id: 4D1BB29D63D98E422B2113B19334A25F8507EFA5
-    url: http://repo.percona.com/percona/apt
-  - type: apt
-    components: [main]
-    suites: [jammy]
-    key-id: 4D1BB29D63D98E422B2113B19334A25F8507EFA5
-    url: http://repo.percona.com/pbm/apt
+    key-id: 6676E3F1A76ADBE4488944BF7D1A96D4BF78C79E
+    url: https://ppa.launchpadcontent.net/data-platform/charmed-mongodb/ubuntu
 
 slots:
   logs:
@@ -55,8 +45,8 @@ slots:
         - $SNAP_COMMON/var/log/pbm
 
 apps:
-  mongo:
-    command: drop_priv.sh mongo
+  mongosh:
+    command: drop_priv.sh mongosh
     plugs:
       - network
   mongobridge:
@@ -139,22 +129,84 @@ apps:
 parts:
   mongo-deb:
     plugin: nil
+#    build-attributes:
+#      - snap-license
     stage-packages:
       - percona-server-mongodb
-      - percona-backup-mongodb
       - util-linux
-    override-prime: |
-      craftctl default
-      LICENSE_LOC=usr/share/doc/percona-server-mongodb
-      zcat $CRAFT_PRIME/$LICENSE_LOC/LICENSE-Community.txt.gz \
-        > $CRAFT_PRIME/licenses/LICENSE-percona-server
+#    override-prime: |
+#      craftctl default
+#      mkdir -p $CRAFT_PRIME/licenses/
+#      LICENSE_LOC=usr/share/doc/percona-server-mongodb
+#      zcat $CRAFT_PRIME/$LICENSE_LOC/LICENSE-Community.txt.gz \
+#        > $CRAFT_PRIME/licenses/LICENSE-percona-server
     organize:
       usr/share/doc/percona-backup-mongodb/copyright:
         licenses/LICENSE-percona-backup-mongodb
+  mongosh:
+    plugin: nil
+    build-packages:
+      - wget
+    stage-packages:
+      - libc6
+      - libgssapi-krb5-2
+    override-build: |
+      wget https://repo.mongodb.org/apt/ubuntu/dists/jammy/mongodb-org/6.0/multiverse/binary-amd64/mongodb-mongosh_2.0.0_amd64.deb
+    override-stage: |
+      dpkg --ignore-depends libc6 --ignore-depends libgssapi-krb5-2 --root ${CRAFT_STAGE} -i ${CRAFT_PART_BUILD}/mongodb-mongosh_2.0.0_amd64.deb
+      snapcraftctl stage # install the packages
+      # rm mongodb-mongosh_2.0.0_amd64.deb
+    override-prime: |
+      snapcraftctl prime
+      mv ${CRAFT_STAGE}/usr/bin/mongosh ${CRAFT_PRIME}/usr/bin/
+      mv ${CRAFT_STAGE}/usr/lib/mongosh_crypt_v1.so ${CRAFT_PRIME}/usr/lib/
+  percona-backup-mongodb:
+    plugin: go
+    source: https://github.com/percona/percona-backup-mongodb
+    build-attributes:
+      - snap-license
+    source-type: git
+    source-tag: v2.2.1
+    build-packages:
+      - git
+      - gcc
+      - make
+    build-snaps:
+      - go/stable
+#    environment:
+#      CGO_ENABLED: 1
+#    override-build: |
+#      CGO_ENABLED=1 make build
+#    organize:
+#      bin/pbm: usr/bin/pbm
+#      LICENSE: licenses/LICENSE-percona-backup-mongodb
   percona-mongodb-exporter:
-    plugin: dump
-    source: "https://github.com/percona/mongodb_exporter/releases/download\
-      /v0.37.0/mongodb_exporter-0.37.0.linux-64-bit.deb"
+    plugin: go
+    source: https://github.com/percona/mongodb_exporter/
+    build-attributes:
+      - snap-license
+    source-type: git
+    source-tag: v0.39.0
+    build-packages:
+      - git
+      - gcc
+      - make
+    build-snaps:
+      - go/stable
+#    environment:
+#      CGO_ENABLED: 1
+    override-build: |
+      make init
+      craftctl default
+    override-prime: |
+      snapcraftctl prime
+      mv ${CRAFT_PRIME}/bin/mongodb_exporter ${CRAFT_PRIME}/usr/bin
+#    stage:
+#      - usr/bin/mongodb_exporter
+#      - licenses/LICENSE-percona-mongodb-exporter
+#    organize:
+#      mongodb_exporter: usr/bin/mongodb_exporter
+#      LICENSE: licenses/LICENSE-percona-mongodb-exporter
   wrapper:
     plugin: dump
     source: snap/local
@@ -166,13 +218,13 @@ parts:
       - licenses/LICENSE-snap
     organize:
       LICENSE: licenses/LICENSE-snap
-  percona-mongodb-exporter-license:
-    plugin: nil
-    build-packages:
-      - wget
-    override-build: |
-      PERCONA_GH=https://raw.githubusercontent.com/percona
-      craftctl default
-      mkdir -p $CRAFT_PART_INSTALL/licenses
-      wget ${PERCONA_GH}/mongodb_exporter/v0.37.0/LICENSE \
-        -O $CRAFT_PART_INSTALL/licenses/LICENSE-mongodb-exporter
+#  percona-mongodb-exporter-license:
+#    plugin: nil
+#    build-packages:
+#      - wget
+#    override-build: |
+#      PERCONA_GH=https://raw.githubusercontent.com/percona
+#      craftctl default
+#      mkdir -p $CRAFT_PART_INSTALL/licenses
+#      wget ${PERCONA_GH}/mongodb_exporter/v0.37.0/LICENSE \
+#        -O $CRAFT_PART_INSTALL/licenses/LICENSE-mongodb-exporter
