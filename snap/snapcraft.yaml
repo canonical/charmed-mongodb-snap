@@ -64,7 +64,6 @@ apps:
   mongod:
     command: start-mongod.sh
     daemon: simple
-    install-mode: disable
     restart-condition: always
     restart-delay: 20s
     plugs:
@@ -90,7 +89,6 @@ apps:
       - network-bind
   mongos:
     daemon: simple
-    install-mode: disable
     command: start-mongos.sh
     restart-condition: always
     restart-delay: 20s
