@@ -105,6 +105,7 @@ apps:
     command: drop_priv.sh mongotop
   mongodb-exporter:
     daemon: simple
+    install-mode: disable
     # wrapper is used to run mongodb-exporter as snap_daemon user
     # and pass the URI via `snapctl`.
     command: start-mongodb-exporter.sh
@@ -123,6 +124,7 @@ apps:
       - network-bind
   pbm-agent:
     daemon: simple
+    install-mode: disable
     # pbm-agent requires a variable for the mongodb uri,
     # enviornment variables are not available to snap daemons,
     # so they must be passed/loaded via `snapctl`. Handling of
