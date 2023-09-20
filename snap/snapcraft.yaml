@@ -45,7 +45,6 @@ package-repositories:
     key-id: 4D1BB29D63D98E422B2113B19334A25F8507EFA5
     url: http://repo.percona.com/pbm/apt
 
-
 slots:
   logs:
     interface: content
@@ -156,14 +155,19 @@ parts:
     plugin: nil
     override-pull: |
       apt install -y wget
-      wget -qO- https://www.mongodb.org/static/pgp/server-7.0.asc | tee /etc/apt/trusted.gpg.d/server-7.0.asc
-      echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+      # mongodb key is not present in ubuntu keyserver, install it manually
+      wget -qO- https://www.mongodb.org/static/pgp/server-7.0.asc | \
+        tee /etc/apt/trusted.gpg.d/server-7.0.asc
+      MONGOSH_DEB="deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu"
+      MONGOSH_VER="jammy/mongodb-org/7.0 multiverse"
+      echo "${MONGOSH_DEB} ${MONGOSH_VER}" | \
+        tee /etc/apt/sources.list.d/mongodb-org-7.0.list
       apt update
       craftctl default
   mongosh:
     plugin: nil
     after:
-        - mongosh-gpg
+      - mongosh-gpg
     build-packages:
       - wget
     stage-packages:
