@@ -194,3 +194,13 @@ parts:
       - licenses/LICENSE-snap
     organize:
       LICENSE: licenses/LICENSE-snap
+  percona-mongodb-exporter-license:
+    plugin: nil
+    build-packages:
+      - wget
+    override-build: |
+      PERCONA_GH=https://raw.githubusercontent.com/percona
+      craftctl default
+      mkdir -p $CRAFT_PART_INSTALL/licenses
+      wget ${PERCONA_GH}/mongodb_exporter/v0.39.0/LICENSE \
+        -O $CRAFT_PART_INSTALL/licenses/LICENSE-mongodb-exporter
