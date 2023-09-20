@@ -1,6 +1,6 @@
 name: charmed-mongodb
 base: core22 # the base snap is the execution environment for this snap
-version: "5.0" # just for humans, typically '1.2+git' or '1.3.2'
+version: "6.0" # just for humans, typically '1.2+git' or '1.3.2'
 summary: MongoDB in a snap. # 79 char long summary
 description: |
   MongoDB is a source-available cross-platform
@@ -32,8 +32,8 @@ package-repositories:
   - type: apt
     components: [main]
     suites: [jammy]
-    key-id: 4D1BB29D63D98E422B2113B19334A25F8507EFA5
-    url: http://repo.percona.com/psmdb-50/apt
+    key-id: 6676E3F1A76ADBE4488944BF7D1A96D4BF78C79E
+    url: https://ppa.launchpadcontent.net/data-platform/charmed-mongodb/ubuntu
   - type: apt
     components: [main]
     suites: [jammy]
@@ -55,8 +55,8 @@ slots:
         - $SNAP_COMMON/var/log/pbm
 
 apps:
-  mongo:
-    command: drop_priv.sh mongo
+  mongosh:
+    command: drop_priv.sh mongosh
     plugs:
       - network
   mongobridge:
@@ -151,10 +151,38 @@ parts:
     organize:
       usr/share/doc/percona-backup-mongodb/copyright:
         licenses/LICENSE-percona-backup-mongodb
+  mongosh-gpg:
+    plugin: nil
+    override-pull: |
+      apt install -y wget
+      # mongodb key is not present in ubuntu keyserver, install it manually
+      wget -qO- https://www.mongodb.org/static/pgp/server-7.0.asc | \
+        tee /etc/apt/trusted.gpg.d/server-7.0.asc
+      MONGOSH_DEB="deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu"
+      MONGOSH_VER="jammy/mongodb-org/7.0 multiverse"
+      echo "${MONGOSH_DEB} ${MONGOSH_VER}" | \
+        tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+      apt update
+      craftctl default
+  mongosh:
+    plugin: nil
+    after:
+      - mongosh-gpg
+    build-packages:
+      - wget
+    stage-packages:
+      - libc6
+      - libgssapi-krb5-2
+      - mongodb-mongosh
+    organize:
+      usr/share/doc/mongodb-mongosh/LICENSE-crypt-library:
+        licenses/LICENSE-crypt-library
+      usr/share/doc/mongodb-mongosh/LICENSE-mongosh:
+        licenses/LICENSE-mongosh
   percona-mongodb-exporter:
     plugin: dump
     source: "https://github.com/percona/mongodb_exporter/releases/download\
-      /v0.37.0/mongodb_exporter-0.37.0.linux-64-bit.deb"
+      /v0.39.0/mongodb_exporter-0.39.0.linux-64-bit.deb"
   wrapper:
     plugin: dump
     source: snap/local
@@ -174,5 +202,5 @@ parts:
       PERCONA_GH=https://raw.githubusercontent.com/percona
       craftctl default
       mkdir -p $CRAFT_PART_INSTALL/licenses
-      wget ${PERCONA_GH}/mongodb_exporter/v0.37.0/LICENSE \
+      wget ${PERCONA_GH}/mongodb_exporter/v0.39.0/LICENSE \
         -O $CRAFT_PART_INSTALL/licenses/LICENSE-mongodb-exporter
