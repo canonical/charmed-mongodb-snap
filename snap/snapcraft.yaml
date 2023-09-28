@@ -37,13 +37,9 @@ package-repositories:
   - type: apt
     components: [main]
     suites: [jammy]
-    key-id: 4D1BB29D63D98E422B2113B19334A25F8507EFA5
-    url: http://repo.percona.com/percona/apt
-  - type: apt
-    components: [main]
-    suites: [jammy]
-    key-id: 4D1BB29D63D98E422B2113B19334A25F8507EFA5
-    url: http://repo.percona.com/pbm/apt
+    key-id: 6676E3F1A76ADBE4488944BF7D1A96D4BF78C79E
+    url: |
+        https://ppa.launchpadcontent.net/data-platform/percona-backup-mongodb/ubuntu
 
 slots:
   logs:
