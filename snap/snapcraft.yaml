@@ -49,6 +49,7 @@ slots:
         - $SNAP_COMMON/var/log/mongod
         - $SNAP_COMMON/var/log/mongos
         - $SNAP_COMMON/var/log/pbm
+        - $SNAP_COMMON/var/log/mongodb
 
 apps:
   mongosh:
