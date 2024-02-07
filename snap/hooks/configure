@@ -2,43 +2,14 @@
 
 set -eux
 
-# We use the pbm config file as an indicator that the config has been correctly set by pbm. 
 PBM_CONFIG_FILE="${SNAP_DATA}/etc/pbm/pbm_config.yaml"
 export PBM_MONGODB_URI="$(snapctl get pbm-uri)"
 
-# PBM requires that a config file was set up in order to facilitate further congurations. 
-#   i.e. with pbm config --set key=value
-# However reseting the config file while PBM is running causes PBM to lose existing configurations
-# and fail. Therefore it is necessary to only set the config file once.
-# Further, setting the config requires that the uri has already been set and that the URI is valid
-# so we must do it after the user sets the uri.
-if [  -n "${PBM_MONGODB_URI}"  ] && [ ! -f "${PBM_CONFIG_FILE}" ]; then
-    # SNAP_DATA is not writable by root - so we must switch to `snap_daemon` user. 
-    "${SNAP}"/usr/bin/setpriv \
-        --clear-groups \
-        --reuid snap_daemon \
-        --regid snap_daemon -- \
-        touch "${PBM_CONFIG_FILE}"
-
-    # if the URI is incorrect then the config file will be ignored and it is necessary to try again
-    # with a correct uri.
-    if "$SNAP/usr/bin/pbm" config --file "${PBM_CONFIG_FILE}"; then
-        # SNAP_DATA is not writable by root - so we must switch to `snap_daemon` user. Further
-        # running `bash -c` will mean that we won't have access to the local variable 
-        # PBM_MONGODB_URI. So we should specify the entire path of the file.
-        "${SNAP}"/usr/bin/setpriv \
-            --clear-groups \
-            --reuid snap_daemon \
-            --regid snap_daemon -- \
-            bash -c 'echo "# this file is to be left empty. Changes in this file will be ignored." > "${SNAP_DATA}/etc/pbm/pbm_config.yaml"'
-    else 
-        echo "uri incorrect failed to correctly set config" 
-        # SNAP_DATA is not writable by root - so we must switch to `snap_daemon` user. 
-        exec "${SNAP}"/usr/bin/setpriv \
-            --clear-groups \
-            --reuid snap_daemon \
-            --regid snap_daemon -- \
-            rm "${PBM_CONFIG_FILE}"
-    fi
-fi
+# It is required that PBM have a config file to start, however using a config file is not
+# recommended since the config file shows sensitive information such as access + secret keys.
+"${SNAP}"/usr/bin/setpriv \
+    --clear-groups \
+    --reuid snap_daemon \
+    --regid snap_daemon -- \
+    bash -c 'echo "# this file is to be left empty. Changes in this file will be ignored." > "${SNAP_DATA}/etc/pbm/pbm_config.yaml"'
 
