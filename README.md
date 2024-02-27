@@ -1,4 +1,6 @@
 # Charmed MongoDB Snap
+[![.github/workflows/publish.yaml](https://github.com/canonical/charmed-mongodb-snap/actions/workflows/publish.yaml/badge.svg)](https://github.com/canonical/charmed-mongodb-snap/actions/workflows/publish.yaml)
+
 This repository contains the packaging metadata for creating a snap of Charmed MongoDB built from the official percona debian repositories. For more information on snaps, visit [snapcraft.io](https://snapcraft.io/). 
 
 ## Installing the Snap
