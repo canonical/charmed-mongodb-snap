@@ -10,7 +10,7 @@ jobs:
     uses: ./.github/workflows/build.yaml
   publish:
     name: Publish Snap
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, X64, jammy, large]
     needs: build
     timeout-minutes: 15
     steps:

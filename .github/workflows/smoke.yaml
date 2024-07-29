@@ -13,7 +13,7 @@ jobs:
   build:
     uses: ./.github/workflows/build.yaml
   smoke:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, X64, jammy, large]
     needs: build
     timeout-minutes: 5
     steps:
