@@ -3,15 +3,15 @@
 
 export PBM_MONGODB_URI="$(snapctl get pbm-uri)"
 
+
+
 if [[ $(id -u) == "0" ]]; then
-    exec bash -c "cd ${SNAP} && \
-        ${SNAP}/usr/bin/setpriv \
+    cd ${SNAP} && exec "${SNAP}"/usr/bin/setpriv \
         --clear-groups \
         --reuid snap_daemon \
         --regid snap_daemon \
         -- \
-        ${SNAP}/usr/bin/$*"
+        "${SNAP}/usr/bin/$@"
 else
-    exec bash -c "cd ${SNAP} && \
-        ${SNAP}/usr/bin/$*"
+    cd ${SNAP} && exec "${SNAP}/usr/bin/$@"
 fi
