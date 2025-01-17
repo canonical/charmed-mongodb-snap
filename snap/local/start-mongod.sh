@@ -11,7 +11,7 @@ ulimit -SHu 64000
 SNAP_ARGS="$(snapctl get mongod-args)"
 
 if [[ -n "${SNAP_ARGS}" ]]; then
-    MONGOD_ARGS=$SNAP_ARGS
+    MONGOD_ARGS="${SNAP_ARGS}"
 fi
 # For security measures, daemons should not be run as sudo. Execute mongod as the non-sudo user: snap-daemon.
 exec $SNAP/usr/bin/setpriv --clear-groups --reuid snap_daemon \
