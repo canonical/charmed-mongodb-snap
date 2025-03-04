@@ -139,6 +139,7 @@ parts:
       - percona-server-mongodb
       - percona-backup-mongodb
       - util-linux
+      - libldap-common
     stage-snaps:
       - yq
     override-prime: |
@@ -149,6 +150,8 @@ parts:
     organize:
       usr/share/doc/percona-backup-mongodb/copyright:
         licenses/LICENSE-percona-backup-mongodb
+      usr/share/doc/libldap-common/copyright:
+        licences/LICENSE-libldap-common
   mongosh-gpg:
     plugin: nil
     override-pull: |
