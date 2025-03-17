@@ -3,6 +3,7 @@
 
 set -eux
 
+export ETC="$SNAP_DATA"/etc
 export CONF="${SNAP_DATA}"/etc/mongod
 export PBM_CONF="${SNAP_DATA}"/etc/pbm
 export DATA="${SNAP_COMMON}"/var/lib/mongodb
@@ -53,8 +54,8 @@ yq -i ".systemLog.path = \"${LOGS}/mongod.log\"" ${MONGOS_CONFIG_FILE}
 yq -i ".net.port = 27018" ${MONGOS_CONFIG_FILE}
 yq -i "del(.storage)" ${MONGOS_CONFIG_FILE}
 
-# Copy over the LDAP configuration
-cp -r "${SNAP}/etc/ldap/" "${SNAP_DATA}/etc/"
+# Copy over the LDAP configuration to keep isolation.
+cp -r "${SNAP}/etc/ldap/" "${ETC}"
 
 # Change ownership of snap directories to allow snap_daemon to read/write
 chown -R 584788:root "${SNAP_DATA}"/*
