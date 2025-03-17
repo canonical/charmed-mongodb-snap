@@ -147,7 +147,6 @@ parts:
       - percona-backup-mongodb
       - util-linux
       - libldap-common
-      - curl
     stage-snaps:
       - yq
     override-prime: |

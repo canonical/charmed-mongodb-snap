@@ -3,11 +3,11 @@
 
 set -eux
 
-export CONF="${SNAP_DATA}"/etc/mongod
-export ETC="${SNAP_DATA}"/etc/
-export MONGOS_CONFIG_FILE="${CONF}"/mongos.conf
-export LOGS="${SNAP_COMMON}"/var/log/mongodb
-export LDAP_CONF_DIR="${SNAP_DATA}"/etc/ldap/
+export CONF="${SNAP_DATA}/etc/mongod"
+export ETC="${SNAP_DATA}/etc/"
+export MONGOS_CONFIG_FILE="${CONF}/mongos.conf"
+export LOGS="${SNAP_COMMON}/var/log/mongodb"
+export LDAP_CONF_DIR="${SNAP_DATA}/etc/ldap/"
 
 
 if [ ! -f $MONGOS_CONFIG_FILE ]; then
@@ -18,7 +18,7 @@ if [ ! -f $MONGOS_CONFIG_FILE ]; then
     # Grant permissions on $CONF
     chown root:snap_daemon $CONF
 
-    cp -r ${SNAP}/etc/mongod.conf ${MONGOS_CONFIG_FILE}
+    cp ${SNAP}/etc/mongod.conf ${MONGOS_CONFIG_FILE}
 
     # mongos.conf default values are not consistent with the snap directory system.
     yq -i ".processManagement.fork = false" ${MONGOS_CONFIG_FILE}
