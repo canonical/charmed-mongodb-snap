@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Pre-refresh hook for charmed-mongodb snap
+
+set -eux
+
+export CONF="${SNAP_DATA}"/etc/mongod
+export MONGOS_CONFIG_FILE="${CONF}"/mongos.conf
+export LDAP_CONF_DIR="${SNAP_DATA}"/etc/ldap/
+
+if [ ! -f $MONGOS_CONFIG_FILE ]; then
+    # Copy over the mongos.conf and create needed directories/files
+    echo "mongos configuration file does not exist."
+    echo "copying default config to ${MONGOS_CONFIG_FILE}"
+    cp -r ${SNAP}/etc/mongod.conf ${MONGOS_CONFIG_FILE}
+
+    # mongos.conf default values are not consistent with the snap directory system.
+    yq -i ".processManagement.fork = false" ${MONGOS_CONFIG_FILE}
+    yq -i ".systemLog.path = \"${LOGS}/mongod.log\"" ${MONGOS_CONFIG_FILE}
+    yq -i ".net.port = 27018" ${MONGOS_CONFIG_FILE}
+    yq -i "del(.storage)" ${MONGOS_CONFIG_FILE}
+
+    # Change ownership of snap directories to allow snap_daemon to read/write
+    chown -R 584788:root ${MONGOS_CONFIG_FILE}
+fi
+
+if  [ ! -d $LDAP_CONF_DIR ]; then
+    # Copy over the LDAP configuration
+    echo "ldap configuration does not exist."
+    echo "copying default config to ${LDAP_CONF_DIR}."
+    cp -r ${SNAP}/etc/ldap/ "$SNAP_DATA"/etc/
+
+    # Change ownership of snap directories to allow snap_daemon to read/write
+    chown -R 584788:root ${LDAP_CONF_DIR}
+fi
