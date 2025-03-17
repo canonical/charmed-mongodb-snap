@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Pre-refresh hook for charmed-mongodb snap
+# post-refresh hook for charmed-mongodb snap
 
 set -eux
 
