@@ -16,9 +16,9 @@ if [ ! -f $MONGOS_CONFIG_FILE ]; then
     echo "copying default config to ${MONGOS_CONFIG_FILE}"
 
     # Grant permissions on $CONF
-    chown root:snap_daemon $CONF
+    chown root:snap_daemon "$CONF"
 
-    cp ${SNAP}/etc/mongod.conf ${MONGOS_CONFIG_FILE}
+    cp "${SNAP}/etc/mongod.conf" "${MONGOS_CONFIG_FILE}"
 
     # mongos.conf default values are not consistent with the snap directory system.
     yq -i ".processManagement.fork = false" ${MONGOS_CONFIG_FILE}
@@ -27,7 +27,7 @@ if [ ! -f $MONGOS_CONFIG_FILE ]; then
     yq -i "del(.storage)" ${MONGOS_CONFIG_FILE}
 
     # Change ownership of snap directories to allow snap_daemon to read/write
-    chown -R 584788:root ${CONF}
+    chown -R 584788:root "${CONF}"
 fi
 
 if  [ ! -d $LDAP_CONF_DIR ]; then
@@ -36,10 +36,10 @@ if  [ ! -d $LDAP_CONF_DIR ]; then
     echo "copying default config to ${LDAP_CONF_DIR}."
 
     # Grant enough permissions to create files
-    chown root:snap_daemon $ETC
+    chown root:snap_daemon "$ETC"
 
-    cp -r ${SNAP}/etc/ldap/ "${ETC}"
+    cp -r "${SNAP}/etc/ldap/" "${ETC}"
 
     # Change ownership of snap directories to allow snap_daemon to read/write
-    chown -R 584788:root ${ETC}
+    chown -R 584788:root "${ETC}"
 fi
