@@ -19,6 +19,10 @@ system-usernames:
   snap_daemon: shared
 
 hooks:
+  post-refresh:
+    plugs:
+      - network
+      - network-bind
   install:
     plugs:
       - network
@@ -49,6 +53,9 @@ slots:
         - $SNAP_COMMON/var/log/mongodb
         - $SNAP_COMMON/var/log/mongos
         - $SNAP_COMMON/var/log/pbm
+
+environment:
+  LDAPCONF: $SNAP_DATA/etc/ldap/ldap.conf
 
 apps:
   mongosh:

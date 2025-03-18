@@ -2,6 +2,7 @@ import yaml
 import subprocess
 import time
 import pytest
+from pathlib import Path
 
 
 def test_install():
@@ -54,3 +55,39 @@ def test_all_services():
                 subprocess.run(f"sudo snap stop {snapcraft['name']}.{app}".split())
 
                 assert "active" in str(service.stdout)
+
+
+@pytest.mark.run(after="test_all_services")
+def test_remove():
+    with open("snap/snapcraft.yaml") as file:
+        snapcraft = yaml.safe_load(file)
+    subprocess.run(f"sudo snap remove --purge {snapcraft['name']}".split())
+
+
+@pytest.mark.run(after="test_remove")
+def test_refresh():
+    with open("snap/snapcraft.yaml") as file:
+        snapcraft = yaml.safe_load(file)
+
+    subprocess.run(f"sudo snap install --channel 6/edge {snapcraft['name']}".split())
+
+    subprocess.run(
+        f"sudo snap install ./{snapcraft['name']}_{snapcraft['version']}_amd64.snap --devmode".split(),
+        check=True,
+    )
+
+    mandatory_files = [
+        Path("/var/snap/charmed-mongodb/current/etc/mongod/mongod.conf"),
+        Path("/var/snap/charmed-mongodb/current/etc/mongod/mongos.conf"),
+        Path("/var/snap/charmed-mongodb/current/etc/ldap/ldap.conf"),
+    ]
+
+    for file_path in mandatory_files:
+        assert file_path.is_file()
+
+
+@pytest.mark.run(after="test_refresh")
+def test_final_remove():
+    with open("snap/snapcraft.yaml") as file:
+        snapcraft = yaml.safe_load(file)
+    subprocess.run(f"sudo snap remove --purge {snapcraft['name']}".split())
