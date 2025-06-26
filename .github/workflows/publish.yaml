@@ -25,4 +25,5 @@ jobs:
           SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
         with:
           snap: ${{ steps.get-snap-name.outputs.SNAP_FILE }}
-          release: ${{ github.ref_name }}
+          release: 6/edge/test-mongodb-6-0-24
+

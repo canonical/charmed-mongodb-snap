@@ -36,8 +36,8 @@ package-repositories:
   - type: apt
     components: [main]
     suites: [jammy]
-    key-id: 6676E3F1A76ADBE4488944BF7D1A96D4BF78C79E
-    url: https://ppa.launchpadcontent.net/data-platform/charmed-mongodb/ubuntu
+    key-id: C768047890EAC55E9004A7BF98003C01D8CC0887
+    url: https://ppa.launchpadcontent.net/gu1nn3zz/charmed-mongodb/ubuntu
   - type: apt
     components: [main]
     suites: [jammy]
