@@ -44,6 +44,12 @@ package-repositories:
     key-id: 6676E3F1A76ADBE4488944BF7D1A96D4BF78C79E
     url: |
         https://ppa.launchpadcontent.net/data-platform/percona-backup-mongodb/ubuntu
+  - type: apt
+    components: [main]
+    suites: [jammy]
+    key-id: 6676E3F1A76ADBE4488944BF7D1A96D4BF78C79E
+    url: |
+        https://ppa.launchpadcontent.net/data-platform/mongodb-exporter/ubuntu
 
 slots:
   logs:
@@ -147,6 +153,7 @@ parts:
       - percona-backup-mongodb
       - util-linux
       - libldap-common
+      - mongodb-exporter
     stage-snaps:
       - yq
     override-prime: |
@@ -157,6 +164,8 @@ parts:
     organize:
       usr/share/doc/percona-backup-mongodb/copyright:
         licenses/LICENSE-percona-backup-mongodb
+      usr/share/doc/mongodb-exporter/copyright:
+        licenses/LICENSE-mongodb-exporter
   mongosh-gpg:
     plugin: nil
     override-pull: |
@@ -185,10 +194,6 @@ parts:
         licenses/LICENSE-crypt-library
       usr/share/doc/mongodb-mongosh/LICENSE-mongosh:
         licenses/LICENSE-mongosh
-  percona-mongodb-exporter:
-    plugin: dump
-    source: "https://github.com/percona/mongodb_exporter/releases/download\
-      /v0.40.0/mongodb_exporter-0.40.0.linux-64-bit.deb"
   wrapper:
     plugin: dump
     source: snap/local
@@ -200,13 +205,3 @@ parts:
       - licenses/LICENSE-snap
     organize:
       LICENSE: licenses/LICENSE-snap
-  percona-mongodb-exporter-license:
-    plugin: nil
-    build-packages:
-      - wget
-    override-build: |
-      PERCONA_GH=https://raw.githubusercontent.com/percona
-      craftctl default
-      mkdir -p $CRAFT_PART_INSTALL/licenses
-      wget ${PERCONA_GH}/mongodb_exporter/v0.40.0/LICENSE \
-        -O $CRAFT_PART_INSTALL/licenses/LICENSE-mongodb-exporter
