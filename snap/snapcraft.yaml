@@ -53,7 +53,7 @@ package-repositories:
   - type: apt
     components: [main]
     suites: [jammy]
-    key-id:  6676E3F1A76ADBE4488944BF7D1A96D4BF78C79E
+    key-id: 6676E3F1A76ADBE4488944BF7D1A96D4BF78C79E
     url: |
         https://ppa.launchpadcontent.net/data-platform/mongodb-shell/ubuntu
 
