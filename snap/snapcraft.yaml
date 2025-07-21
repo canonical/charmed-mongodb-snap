@@ -50,6 +50,12 @@ package-repositories:
     key-id: 6676E3F1A76ADBE4488944BF7D1A96D4BF78C79E
     url: |
         https://ppa.launchpadcontent.net/data-platform/mongodb-exporter/ubuntu
+  - type: apt
+    components: [main]
+    suites: [jammy]
+    key-id:  6676E3F1A76ADBE4488944BF7D1A96D4BF78C79E
+    url: |
+        https://ppa.launchpadcontent.net/data-platform/mongodb-shell/ubuntu
 
 slots:
   logs:
@@ -154,6 +160,9 @@ parts:
       - util-linux
       - libldap-common
       - mongodb-exporter
+      - libc6
+      - libgssapi-krb5-2
+      - mongodb-shell
     stage-snaps:
       - yq
     override-prime: |
@@ -166,6 +175,8 @@ parts:
         licenses/LICENSE-percona-backup-mongodb
       usr/share/doc/mongodb-exporter/copyright:
         licenses/LICENSE-mongodb-exporter
+      usr/share/doc/mongodh-shell/copyright:
+        licenses/LICENSE-mongodb-shell
   mongosh-gpg:
     plugin: nil
     override-pull: |
@@ -179,21 +190,6 @@ parts:
         tee /etc/apt/sources.list.d/mongodb-org-7.0.list
       apt update
       craftctl default
-  mongosh:
-    plugin: nil
-    after:
-      - mongosh-gpg
-    build-packages:
-      - wget
-    stage-packages:
-      - libc6
-      - libgssapi-krb5-2
-      - mongodb-mongosh
-    organize:
-      usr/share/doc/mongodb-mongosh/LICENSE-crypt-library:
-        licenses/LICENSE-crypt-library
-      usr/share/doc/mongodb-mongosh/LICENSE-mongosh:
-        licenses/LICENSE-mongosh
   wrapper:
     plugin: dump
     source: snap/local
