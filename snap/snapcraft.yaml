@@ -141,7 +141,7 @@ apps:
     daemon: simple
     install-mode: disable
     # pbm-agent requires a variable for the mongodb uri,
-    # enviornment variables are not available to snap daemons,
+    # environment variables are not available to snap daemons,
     # so they must be passed/loaded via `snapctl`. Handling of
     # this variable is done via a wrapper
     command: start-pbm-agent.sh
@@ -177,19 +177,6 @@ parts:
         licenses/LICENSE-mongodb-exporter
       usr/share/doc/mongodh-shell/copyright:
         licenses/LICENSE-mongodb-shell
-  mongosh-gpg:
-    plugin: nil
-    override-pull: |
-      apt install -y wget
-      # mongodb key is not present in ubuntu keyserver, install it manually
-      wget -qO- https://www.mongodb.org/static/pgp/server-7.0.asc | \
-        tee /etc/apt/trusted.gpg.d/server-7.0.asc
-      MONGOSH_DEB="deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu"
-      MONGOSH_VER="jammy/mongodb-org/7.0 multiverse"
-      echo "${MONGOSH_DEB} ${MONGOSH_VER}" | \
-        tee /etc/apt/sources.list.d/mongodb-org-7.0.list
-      apt update
-      craftctl default
   wrapper:
     plugin: dump
     source: snap/local
