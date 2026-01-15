@@ -11,18 +11,20 @@ on:
 
 jobs:
   build:
-    uses: ./.github/workflows/build.yaml
+    name: Build snap
+    uses: canonical/data-platform-workflows/.github/workflows/build_snap.yaml@v29.0.5
   smoke:
-    runs-on: [self-hosted, linux, X64, jammy, large]
+    runs-on: ubuntu-latest
     needs: build
     timeout-minutes: 5
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install tox
         run: python3 -m pip install tox
       - uses: actions/download-artifact@v4
         with:
-          name: snap-artifact
+          pattern: ${{ needs.build.outputs.artifact-prefix }}-*
+          merge-multiple: true
       - name: Smoke Tests
         run: tox run -e smoke
