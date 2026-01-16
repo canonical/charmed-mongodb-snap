@@ -9,11 +9,11 @@ on:
 jobs:
   build:
     name: Build snap
-    uses: canonical/data-platform-workflows/.github/workflows/build_snap.yaml@v29.0.5
+    uses: canonical/data-platform-workflows/.github/workflows/build_snap.yaml@v40.0.2
   publish:
     name: Publish Snap
     needs: build
-    uses: canonical/data-platform-workflows/.github/workflows/release_snap.yaml@v29.0.5
+    uses: canonical/data-platform-workflows/.github/workflows/release_snap.yaml@v40.0.2
     with:
       channel: 8/edge
       artifact-prefix: ${{ needs.build.outputs.artifact-prefix }}
