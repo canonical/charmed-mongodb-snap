@@ -1,29 +1,22 @@
 on:
   push:
     branches:
-      - '[0-9]/[a-z]+'
-      - '8-transition/[a-z]+'
+      - "[0-9]/[a-z]+"
+      - "8-transition/[a-z]+"
   workflow_call:
   workflow_dispatch:
 
 jobs:
   build:
-    uses: ./.github/workflows/build.yaml
+    uses: canonical/data-platform-workflows/.github/workflows/build_snap.yaml@v41.0.0
   publish:
     name: Publish Snap
-    runs-on: [self-hosted, linux, X64, jammy, large]
     needs: build
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/download-artifact@v4
-        with:
-          name: snap-artifact
-      - id: get-snap-name
-        run: echo "SNAP_FILE=$(ls *.snap)" >> $GITHUB_OUTPUT
-      - uses: snapcore/action-publish@v1
-        env:
-          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
-        with:
-          snap: ${{ steps.get-snap-name.outputs.SNAP_FILE }}
-          release: ${{ github.ref_name }}
+    uses: canonical/data-platform-workflows/.github/workflows/release_snap.yaml@v41.0.0
+    with:
+      channel: 8-transition/edge
+      artifact-prefix: ${{ needs.build.outputs.artifact-prefix }}
+    secrets:
+      snap-store-token: ${{ secrets.STORE_LOGIN }}
+    permissions:
+      contents: write
