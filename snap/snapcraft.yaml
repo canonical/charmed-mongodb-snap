@@ -10,7 +10,7 @@ description: |
 
 grade: stable # must be 'stable' to release into candidate/stable channels
 confinement: strict
-platforms:
+architectures:
   amd64:
 
 website: https://github.com/canonical/charmed-mongodb-snap
