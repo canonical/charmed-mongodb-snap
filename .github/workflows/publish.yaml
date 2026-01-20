@@ -10,6 +10,7 @@ jobs:
     uses: canonical/data-platform-workflows/.github/workflows/build_snap.yaml@v41.0.0
   publish:
     name: Publish Snap
+    needs: build
     uses: canonical/data-platform-workflows/.github/workflows/release_snap.yaml@v41.0.0
     with:
       channel: 6/edge
