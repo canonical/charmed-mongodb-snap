@@ -7,8 +7,15 @@ description: |
   document-oriented database program. Classified
   as a NoSQL database program, MongoDB uses JSON
   -like documents with optional schemas.
+<<<<<<< LEFT
 platforms:
   amd64:
+||||||| BASE
+=======
+platforms:
+  amd64:
+  arm64:
+>>>>>>> RIGHT
 
 grade: stable # must be 'stable' to release into candidate/stable channels
 confinement: strict
