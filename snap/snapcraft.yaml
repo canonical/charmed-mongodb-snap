@@ -9,6 +9,7 @@ description: |
   -like documents with optional schemas.
 platforms:
   amd64:
+  arm64:
 
 grade: stable # must be 'stable' to release into candidate/stable channels
 confinement: strict
