@@ -80,6 +80,7 @@ def test_refresh():
         Path("/var/snap/charmed-mongodb/current/etc/mongod/mongod.conf"),
         Path("/var/snap/charmed-mongodb/current/etc/mongod/mongos.conf"),
         Path("/var/snap/charmed-mongodb/current/etc/ldap/ldap.conf"),
+        Path("/var/snap/charmed-mongodb/current/etc/vault/vault.hcl"),
     ]
 
     for file_path in mandatory_files:
