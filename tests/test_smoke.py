@@ -84,7 +84,6 @@ def test_refresh():
     ]
 
     for file_path in mandatory_files:
-        breakpoint()
         assert file_path.is_file()
 
 
