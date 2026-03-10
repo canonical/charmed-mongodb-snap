@@ -60,3 +60,4 @@ if [ ! -d $VAULT_CONF ]; then
 
     # Change ownership of snap directories to allow snap_daemon to read/write
     chown -R 584788:root "${ETC}"
+fi
