@@ -6,16 +6,21 @@ set -eux
 export ETC="$SNAP_DATA"/etc
 export CONF="${SNAP_DATA}"/etc/mongod
 export PBM_CONF="${SNAP_DATA}"/etc/pbm
+export VAULT_CONF="${SNAP_DATA}"/etc/vault
 export DATA="${SNAP_COMMON}"/var/lib/mongodb
 export LOGS="${SNAP_COMMON}"/var/log/mongodb
+export VAULT_LOGS="${SNAP_COMMON}"/var/log/vault
 export MONGO_CONFIG_FILE="${CONF}"/mongod.conf
 export MONGOS_CONFIG_FILE="${CONF}"/mongos.conf
+export VAULT_CONFIG_FILE="${VAULT_CONF}"/vault-agent.hcl
 
 # Create the necessary parent directories 
 mkdir -p $DATA
 mkdir -p $LOGS
+mkdir -p $VAULT_LOGS
 mkdir -p $PBM_CONF
 mkdir -p $CONF
+mkdir -p $VAULT_CONF
 
 # If we just created the directory, we set up permissions
 if [ stat -c '%u' "$DATA" == 0 ]; then
@@ -27,6 +32,11 @@ fi
 if [ stat -c '%u' "$LOGS" == 0 ]; then
     chmod -R 770 "${SNAP_COMMON}"
     chmod g+s "$LOGS"/*
+fi
+
+if [ stat -c '%u' "$VAULT_LOGS" == 0 ]; then
+    chmod -R 770 "${SNAP_COMMON}"
+    chmod g+s "$VAULT_LOGS"/*
 fi
 
 chown -R 584788:root "${SNAP_COMMON}"/*
@@ -41,7 +51,9 @@ echo "mongos configuration file does not exist."
 echo "copying default config to ${MONGOS_CONFIG_FILE}"
 cp -r ${SNAP}/etc/mongod.conf ${MONGOS_CONFIG_FILE}
 
-
+echo "vault configuration file does not exist."
+echo "copying default config to ${VAULT_CONFIG_FILE}"
+cp -r ${SNAP}/vault.hcl ${VAULT_CONFIG_FILE}
 
 # mongod.conf default values are not consistent with the snap directory system.
 yq -i ".processManagement.fork = false" ${MONGO_CONFIG_FILE}
