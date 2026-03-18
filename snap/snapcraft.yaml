@@ -26,10 +26,12 @@ hooks:
     plugs:
       - network
       - network-bind
+      - home
   install:
     plugs:
       - network
       - network-bind
+      - home
   configure:
     plugs:
       - network
@@ -167,6 +169,7 @@ apps:
     plugs:
       - network
       - network-bind
+      - home
     slots:
       - logs
 parts:
