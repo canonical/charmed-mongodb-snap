@@ -147,6 +147,8 @@ apps:
     plugs:
       - network
       - network-bind
+    environment:
+      SSL_CERT_DIR: "/etc/ssl/certs:/etc/pki/tls/certs:$SNAP/etc/ssl/certs:$SNAP_DATA/etc/pbm/certs"
   pbm-agent:
     daemon: simple
     install-mode: disable
@@ -160,6 +162,9 @@ apps:
       - network-bind
     slots:
       - logs
+    environment:
+      # Base from UBUNTU + RHEL, then snap certs, then local certs
+      SSL_CERT_DIR: "/etc/ssl/certs:/etc/pki/tls/certs:$SNAP/etc/ssl/certs:$SNAP_DATA/etc/pbm/certs"
   vault-agent:
     daemon: simple
     install-mode: disable
