@@ -1,7 +1,7 @@
-name: mongodb
+name: slim-mongodb
 base: core24 # the base snap is the execution environment for this snap
 version: "8.0.10-3" # just for humans, typically '1.2+git' or '1.3.2'
-summary: MongoDB in a snap. # 79 char long summary
+summary: Slim MongoDB in a snap. # 79 char long summary
 description: |
   MongoDB is a source-available cross-platform
   document-oriented database program. Classified
@@ -59,8 +59,11 @@ parts:
     stage-packages:
       - percona-server-mongodb
       - util-linux
+    stage-snaps:
+      - yq
     override-prime: |
       craftctl default
+      mkdir -p "$CRAFT_PRIME/licenses"
       LICENSE_LOC=usr/share/doc/percona-server-mongodb
       zcat $CRAFT_PRIME/$LICENSE_LOC/LICENSE-Community.txt.gz \
         > $CRAFT_PRIME/licenses/LICENSE-percona-server

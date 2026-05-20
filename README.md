@@ -24,7 +24,7 @@ sudo lxd init --auto
 ### Packing and Installing the Snap
 ```bash
 snapcraft pack
-sudo snap install ./charmed-mongodb*.snap --devmode
+sudo snap install ./slim-mongodb*.snap --devmode
 ```
 
 ## License

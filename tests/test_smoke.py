@@ -3,6 +3,7 @@ import subprocess
 import time
 import pytest
 
+
 def test_install():
     with open("snap/snapcraft.yaml") as file:
         snapcraft = yaml.safe_load(file)
