@@ -12,6 +12,9 @@ on:
 jobs:
   build:
     uses: canonical/data-platform-workflows/.github/workflows/build_snap.yaml@v41.0.0
+    permissions:
+      actions: read # Needed for GitHub API call to get workflow version
+      contents: read
   smoke:
     runs-on: ubuntu-latest
     needs: build
