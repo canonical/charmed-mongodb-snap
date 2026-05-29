@@ -21,4 +21,5 @@ jobs:
     secrets:
       snap-store-token: ${{ secrets.STORE_LOGIN }}
     permissions:
+      actions: read # Needed for GitHub API call to get workflow version
       contents: write
