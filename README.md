@@ -1,3 +1,7 @@
+> [!WARNING]
+> This repository is deprecated and no longer maintained. The Charmed MongoDB rock
+> has moved to the [mongodb-artifacts repository](https://github.com/canonical/mongodb-artifacts).
+
 # Charmed MongoDB Snap
 [![.github/workflows/publish.yaml](https://github.com/canonical/charmed-mongodb-snap/actions/workflows/publish.yaml/badge.svg)](https://github.com/canonical/charmed-mongodb-snap/actions/workflows/publish.yaml)
 
