@@ -1,5 +1,5 @@
 > [!WARNING]
-> This repository is deprecated and no longer maintained. The Charmed MongoDB rock
+> This repository is deprecated and no longer maintained. The Charmed MongoDB snap
 > has moved to the [mongodb-artifacts repository](https://github.com/canonical/mongodb-artifacts).
 
 # Charmed MongoDB Snap
